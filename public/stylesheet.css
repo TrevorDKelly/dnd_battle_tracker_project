@@ -1,0 +1,58 @@
+body > header {
+  max-width: 1000;
+  margin: 1em, auto;
+}
+
+header > h1 {
+  font-family: 'Texturina', sans-serif;
+  font-size: 50px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.flash {
+  min-width: 200px;
+  max-width: 60%;
+  height: 2em;
+  text-align: center;
+  margin: auto;
+  border-radius: 1em;
+}
+
+.flash p {
+  display: inline-block;
+  margin: 0.5em;
+  font-weight: bold;
+}
+
+.flash.error {
+  background: #FFD700;
+}
+
+.flash.success {
+  background: #228B22;
+}
+
+.fight {
+  display: inline-block;
+  width: 90%;
+  padding: 1em;
+  margin: 0.2em;
+  background: LightGrey;
+  border: 0.15em solid black;
+  border-radius: 1em;
+}
+
+.fight a {
+
+}
+
+.character {
+  display: inline-block;
+  width: 90%;
+  padding: 1em;
+  margin: 0.2em;
+  background: LightGrey;
+  border: 0.15em solid black;
+  border-radius: 1em;
+}

@@ -1,0 +1,11 @@
+<h2>Your fights:</h2>
+
+<a href="/new_fight"><button>New Fight!</button></a>
+
+<% @fights.each do |fight| %>
+  <a href="/<%= slugify(fight.name) %>">
+    <div class="fight">
+      <h3><%= fight.name %></h3>
+    </div>
+  </a>
+<% end %>

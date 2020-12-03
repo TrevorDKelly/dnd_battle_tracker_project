@@ -1,0 +1,12 @@
+<h2><%= @fight.name %></h2>
+
+<a href="/<%= slugify(@fight.name) %>/new_character">
+  <button>Add a Character</button>
+</a>
+
+<% @fight.characters.each do |character| %>
+  <div class="character">
+    <%= character.name %>
+    <%= character.hp %>
+  </div>
+<% end %>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Battle Tracker</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Texturina:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheet.css'>
+  </head>
+
+  <main>
+    <header>
+      <h1>Battle Tracker</h1>
+    </header>
+
+    <body>
+      <% if session[:error] %>
+        <div class="flash error">
+          <p><%= session.delete(:error) %></p>
+        </div>
+      <% end %>
+
+      <% if session[:success] %>
+        <div class="flash success">
+          <p><%= session.delete(:success) %></p>
+        </div>
+      <% end %>
+
+      <%== yield %>
+    </body>
+  </main>
+</html>
