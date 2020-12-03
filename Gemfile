@@ -4,7 +4,7 @@ ruby '2.7.1'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
-gem 'tilt'
+gem 'erubis'
 
 gem 'minitest'
 gem 'rack-test'
