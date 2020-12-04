@@ -1,2 +1,2 @@
-require './lib/battle_tracker'
+require './battle_tracker'
 run Sinatra::Application
