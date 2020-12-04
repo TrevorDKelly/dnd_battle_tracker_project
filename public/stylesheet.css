@@ -1,6 +1,11 @@
+body {
+  margin: 5em;
+  margin-top: 2em;
+}
+
 body > header {
   max-width: 1000;
-  margin: 1em, auto;
+  margin: auto;
 }
 
 header > h1 {
@@ -8,6 +13,58 @@ header > h1 {
   font-size: 50px;
   text-align: center;
   margin: 0 auto;
+}
+
+.top {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 0.3em;
+}
+
+.title {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+
+.title h2 {
+  font: bold 2em serif;
+  margin: auto;
+}
+
+.top a {
+  display: inline-block;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.top button {
+  width: 15em;
+  height: 3em;
+  box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
+	background-color:#bddbfa;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	cursor:pointer;
+	color: black;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px white;
+}
+
+.top button.home-button {
+	background:linear-gradient(to bottom, #c7dbfa 5%, #83c96f 100%);
 }
 
 .flash {
@@ -33,25 +90,50 @@ header > h1 {
   background: #228B22;
 }
 
-.fight {
+.list-box {
+  box-shadow: 0.1em 0.1em black;
   display: inline-block;
-  width: 90%;
-  padding: 1em;
-  margin: 0.2em;
+  width: 100%;
+  margin: 0.2em 0em 0.2em 0em;
   background: LightGrey;
   border: 0.15em solid black;
   border-radius: 1em;
+  font: 1.1em sans-serif;
+  color: black;
+  min-height: 4em;
 }
 
-.fight a {
+.list-box.info {
+  border: none;
+  width: auto;
+  vertical-align: middle;
+  margin: auto;
+  padding: 0.4em;
+  box-shadow: none;
+}
 
+.list-box.info p {
+  margin: 0.3em;
+}
+
+.list-box.info.name {
+  width: 33%;
+}
+
+.list-box.info.name h3 {
+  font: 1.2em 'Texturina', sans-serif;
+  margin: auto;
+}
+
+.list-box.info.name p {
+  margin:auto;
+  font: italic 0.8em sans-serif;
+  vertical-align: bottom;
 }
 
 .character {
   display: inline-block;
-  width: 90%;
-  padding: 1em;
-  margin: 0.2em;
+  width: 100%;
   background: LightGrey;
   border: 0.15em solid black;
   border-radius: 1em;

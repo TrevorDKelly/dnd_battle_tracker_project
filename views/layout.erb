@@ -13,6 +13,10 @@
     </header>
 
     <body>
+      <div class="top">
+        <%== yield_content :top%>
+      </div>
+
       <% if session[:error] %>
         <div class="flash error">
           <p><%= session.delete(:error) %></p>

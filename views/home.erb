@@ -1,11 +1,31 @@
-<h2>Your fights:</h2>
+<% content_for :top do %>
+  <h2 class="left">Your fights:</h2>
 
-<a href="/new_fight"><button>New Fight!</button></a>
+  <a class="right" href="/new_fight"><button>New Fight!</button></a>
+<% end %>
 
 <% @fights.each do |fight| %>
   <a href="/<%= slugify(fight.name) %>">
-    <div class="fight">
-      <h3><%= fight.name %></h3>
+    <div class="list-box">
+      <div class="list-box info name">
+        <h3><%= fight.name %></h3>
+        <p>Status: <%= fight.status %></p>
+      </div>
+
+      <div class="list-box info">
+        <p>Total Characters</p>
+        <p><%= fight.characters.size %></p>
+      </div>
+
+      <div class="list-box info">
+        <p>NPC Characters</p>
+        <p><%= fight.npc_count %></p>
+      </div>
+
+      <div class="list-box info">
+        <p>Player Characters</p>
+        <p><%= fight.player_count %></p>
+      </div>
     </div>
   </a>
 <% end %>
