@@ -7,7 +7,10 @@ gem 'sinatra-contrib'
 gem 'erubis'
 
 gem 'minitest'
+gem 'minitest-reporters'
 gem 'rack-test'
+
+gem 'rake'
 
 gem 'sysrandom'
 
