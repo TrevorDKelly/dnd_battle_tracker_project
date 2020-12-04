@@ -1,0 +1,36 @@
+home page
+  list of fights
+    delete button
+    duplicate button
+    restart
+fight page
+  home button
+  add char button
+  title
+  roll initiative
+  list chracters reoder w/ initiative
+    name
+    hp/hp max
+    take damage
+    heal
+
+add character race and class
+
+duplicate fight
+  recreate name
+  recreate characters
+    character duplicate
+      dont adjust name
+  status prepping
+
+  click duplicate
+    call fight.duplicate
+    add to fights list
+
+    fight.duplicate
+      create new fight
+        name iteration
+        iterate thru characters duplicating
+          no name change
+            character recreate
+      return fight object
