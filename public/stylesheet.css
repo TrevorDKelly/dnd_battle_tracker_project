@@ -131,6 +131,14 @@ header > h1 {
 .info-box {
   display: inline-block;
   width: 30%;
+  text-align: center;
+}
+
+.info-box h4 {
+  margin: auto;
+  font: bold 15px sans-serif;
+  border-bottom: 2px solid black;
+  width: 85%;
 }
 
 .fight-name {

@@ -15,6 +15,10 @@ class Character
     self.class == Player
   end
 
+  def is_npc?
+    self.class == Npc
+  end
+
   def take_damage(amount)
     @hp -= amount.to_i
     @hp = @hp <= 0 ? 0 : @hp

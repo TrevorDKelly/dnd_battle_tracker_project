@@ -44,4 +44,12 @@ class Fight
 
     fight
   end
+
+  def npcs
+    @characters.select(&:is_npc?)
+  end
+
+  def strongest_npc
+    npcs.max { |a, b| a.max_hp <=> b.max_hp }
+  end
 end
