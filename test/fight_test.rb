@@ -105,4 +105,33 @@ class FightTest < Minitest::Test
 
     assert_equal Fight, new_fight.class
   end
+
+  def test_npcs
+    create_fight
+    create_characters(2, 2)
+
+    [@npc_0, @npc_1, @player_0, @player_1].each { |char| @fight << char }
+
+    npcs = @fight.npcs
+
+    assert_instance_of Array, npcs
+    assert_includes npcs, @npc_0
+    assert_includes npcs, @npc_1
+    refute_includes npcs, @player_0
+    refute_includes npcs, @player_1
+  end
+
+  def test_strongest_npc
+    create_fight
+
+    assert_nil @fight.strongest_npc
+
+    strongest = Npc.new("strong", 100)
+    weak = Npc.new("weak", 10)
+    player = Player.new("player", 200)
+
+    [strongest, weak, player].each { |char| @fight << char }
+
+    assert_equal strongest, @fight.strongest_npc
+  end
 end

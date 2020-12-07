@@ -32,6 +32,13 @@ class FightTest < Minitest::Test
     refute @npc.is_player?
   end
 
+  def test_is_npc?
+    create_characters
+
+    refute @player.is_npc?
+    assert @npc.is_npc?
+  end
+
   def test_take_damage
     create_npc
     @npc.take_damage(5)
