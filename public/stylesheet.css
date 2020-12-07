@@ -87,7 +87,7 @@ header > h1 {
 }
 
 .flash.success {
-  background: #228B22;
+  background: #6ded76;
 }
 
 .list-box {
@@ -129,6 +129,44 @@ header > h1 {
   margin:auto;
   font: italic 0.8em sans-serif;
   vertical-align: bottom;
+}
+
+.list-box.buttons {
+  float:right
+}
+
+button.fight {
+  width: 6em;
+  height: 1.7em;
+	border-radius:6px;
+	display:inline-block;
+	cursor:pointer;
+	color: black;
+	font-family:Arial;
+	font-size: 0.7em;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+button.delete {
+  box-shadow:inset 0px 1px 0px 0px #e6bec4;
+	background:linear-gradient(to bottom, #d68590 5%, #e65366 100%);
+	border:1px solid #B50B33;
+	text-shadow:0px 0.5px 0px #e6bec4;
+}
+
+button.duplicate {
+  box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
+	border:1px solid #84bbf3;
+	text-shadow:0px 1px 0px white;
+}
+
+button.restart {
+  box-shadow: inset 0px 1px 0px 0px #bee6bf;
+  background: linear-gradient(to bottom, #bee6bf 5%, #69b56a 100%);
+  border: 1px solid #34bf35;
+  text-shadow: 0px 1px 0px #bee6bf;
 }
 
 .character {

@@ -74,7 +74,6 @@ class FightTest < Minitest::Test
 
     new_fight = @fight.duplicate
 
-    assert_equal Fight, new_fight.class
     assert_equal @fight.characters.size, new_fight.characters.size
 
     @fight.characters.each_with_index do |character, index|
@@ -82,6 +81,8 @@ class FightTest < Minitest::Test
 
       assert_equal character.name, new_character.name
       refute_same character, new_character
+
+      assert_equal character.instance_variables, new_character.instance_variables
     end
   end
 
@@ -95,5 +96,13 @@ class FightTest < Minitest::Test
     new_fight.characters.each do |character|
       assert_equal character.max_hp, character.hp
     end
+  end
+
+  def test_duplicate_returns_fight_object
+    create_fight(2, 2)
+
+    new_fight = @fight.duplicate
+
+    assert_equal Fight, new_fight.class
   end
 end

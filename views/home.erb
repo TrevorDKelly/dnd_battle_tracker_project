@@ -5,8 +5,8 @@
 <% end %>
 
 <% @fights.each do |fight| %>
-  <a href="/<%= slugify(fight.name) %>">
-    <div class="list-box">
+  <div class="list-box">
+    <a href="/<%= slugify(fight.name) %>">
       <div class="list-box info name">
         <h3><%= fight.name %></h3>
         <p>Status: <%= fight.status %></p>
@@ -26,6 +26,20 @@
         <p>Player Characters</p>
         <p><%= fight.player_count %></p>
       </div>
+    </a>
+
+    <div class="list-box info buttons">
+      <form action="/<%= slugify(fight.name) %>/delete" method="POST">
+        <button class="fight delete" type="submit">Delete</button>
+      </form>
+
+      <form action="/<%= slugify(fight.name) %>/duplicate" method="POST">
+        <button class="fight duplicate" type="submit">Duplicate</button>
+      </form>
+
+      <form action="/<%= slugify(fight.name) %>/restart" method="POST">
+        <button class="fight restart" type="submit">Restart</button>
+      </form>
     </div>
-  </a>
+  </div>
 <% end %>

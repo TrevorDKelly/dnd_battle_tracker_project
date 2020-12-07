@@ -3,6 +3,7 @@ home page
     delete button
     duplicate button
     restart
+    Edit
 fight page
   home button
   add char button
@@ -16,21 +17,5 @@ fight page
 
 add character race and class
 
-duplicate fight
-  recreate name
-  recreate characters
-    character duplicate
-      dont adjust name
-  status prepping
-
-  click duplicate
-    call fight.duplicate
-    add to fights list
-
-    fight.duplicate
-      create new fight
-        name iteration
-        iterate thru characters duplicating
-          no name change
-            character recreate
-      return fight object
+restart fight
+  reset hps and other stats

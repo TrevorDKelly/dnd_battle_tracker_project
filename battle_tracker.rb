@@ -70,6 +70,32 @@ get "/:fight_name" do
   erb :fight
 end
 
+# Delete Fight
+post "/:fight_name/delete" do
+  fetch_fight(params[:fight_name])
+  if @fight
+    session[:success] = "#{@fight.name} was deleted"
+    session[:fights].delete(@fight)
+  else
+    session[:error] = "That fight could not be found"
+  end
+
+  redirect "/"
+end
+
+# Duplicate Fight
+post "/:fight_name/duplicate" do
+  fetch_fight(params[:fight_name])
+  if @fight
+    session[:fights] << @fight.duplicate
+    session[:success] = "#{@fight.name} was duplicated!"
+  else
+    session[:error] = "That fight could not be found"
+  end
+
+  redirect "/"
+end
+
 # New Character
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
