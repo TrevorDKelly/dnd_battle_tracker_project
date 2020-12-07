@@ -1,13 +1,18 @@
 home page
   list of fights
-    delete button
-    duplicate button
+    strongest npc
+      name and hp
+    fight progress
+      npc hp total -- start v current
+      player hp total -- start v current
     restart
-    Edit
+      reset all stats
+      change status to prepping
 fight page
   home button
   add char button
   title
+  Edit - in fight
   roll initiative
   list chracters reoder w/ initiative
     name

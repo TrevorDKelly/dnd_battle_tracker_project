@@ -95,44 +95,62 @@ header > h1 {
   display: inline-block;
   width: 100%;
   margin: 0.2em 0em 0.2em 0em;
-  background: LightGrey;
   border: 0.15em solid black;
   border-radius: 1em;
   font: 1.1em sans-serif;
   color: black;
   min-height: 4em;
+  padding: 0.4em
 }
 
-.list-box.info {
-  border: none;
-  width: auto;
-  vertical-align: middle;
+.list-box a {
+  text-decoration: none;
+}
+
+.list-box.fight {
+  background: #f7cf99;
+}
+
+.fight-info {
+  display: inline-block;
   margin: auto;
   padding: 0.4em;
-  box-shadow: none;
+  width: 60%;
+  color: black;
 }
 
-.list-box.info p {
+.fight-info p {
   margin: 0.3em;
 }
 
-.list-box.info.name {
-  width: 33%;
+.fight-buttons {
+  float:right;
+  width:auto;
 }
 
-.list-box.info.name h3 {
+.info-box {
+  display: inline-block;
+  width: 30%;
+}
+
+.fight-name {
+  display: inline-block;
+  width: 25%;
+  border: none;
+  box-shadow: none;
+  padding: 0.4em;
+  color: black;
+}
+
+.fight-name h3 {
   font: 1.2em 'Texturina', sans-serif;
   margin: auto;
 }
 
-.list-box.info.name p {
+.fight-name p {
   margin:auto;
   font: italic 0.8em sans-serif;
   vertical-align: bottom;
-}
-
-.list-box.buttons {
-  float:right
 }
 
 button.fight {
