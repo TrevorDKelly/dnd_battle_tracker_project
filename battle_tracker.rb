@@ -21,6 +21,23 @@ helpers do
   def slugify(*names)
     names.map { |name| name.gsub(' ', '-') }.join('/')
   end
+
+  def health_fill(character)
+    percent = (character.hp / character.max_hp) * 100
+    color = health_color(percent)
+    "width:#{percent}%; background:#{color};"
+  end
+end
+
+def health_color(percent)
+    case percent
+    when (90..100) then "#a6e647"
+    when (70..89) then "#d1e647"
+    when (50..69) then "#e6e147"
+    when (30..49) then "#e6be47"
+    when (15..29) then "#e66c47"
+    else           "#c71c1c"
+    end
 end
 
 def fight_name_taken?(name)

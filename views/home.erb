@@ -7,9 +7,9 @@
 <% @fights.each do |fight| %>
   <div class="list-box fight">
     <a href="/<%= slugify(fight.name) %>">
-      <div class="fight-name">
-        <h3><%= fight.name %></h3>
-        <p>Status: <%= fight.status %></p>
+      <div class="name">
+        <h3 class="fight-name"><%= fight.name %></h3>
+        <p class="fight-status">Status: <%= fight.status %></p>
       </div>
 
       <div class="fight-info">
@@ -28,6 +28,7 @@
           <p>
             <% if fight.npc_count > 0 %>
               <%= fight.strongest_npc.name %>
+              HP:<%= fight.strongest_npc.max_hp %>
             <% else %>
               Currently No NPCs
             <% end %>
