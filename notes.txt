@@ -7,11 +7,11 @@ home page
       reset all stats
       change status to prepping
 fight page
+  fight notes
   Edit - in fight
   roll initiative
   list chracters reoder w/ initiative
     name
-    hp/hp max
     take damage
     heal
 
@@ -19,3 +19,44 @@ add character race and class
 
 restart fight
   reset hps and other stats
+
+
+to do
+  edit button
+    on each fight on home page
+      add path
+        new edit page
+        post from page
+
+    on each character in fight page
+    create edit page
+  structure new fight page
+  restart button
+    heal all characters
+      full heal character method
+      restart fight method
+        iterate thru all chars and full heal
+    reset status to prepping
+  add fight progess to home page fights
+  add character info
+    initiative
+    state
+      poison, prone, ...
+      gather posible states
+  sinatra tests
+
+characters
+  initiative
+  status (prone, ....
+    list of possible from class method
+  notes
+
+fight
+  notes
+  dates
+    created
+    started
+    last change
+  progress
+    last 10 or so events
+

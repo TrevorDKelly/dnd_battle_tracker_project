@@ -32,11 +32,11 @@ end
 def health_color(percent)
     case percent
     when (90..100) then "#a6e647"
-    when (70..89) then "#d1e647"
-    when (50..69) then "#e6e147"
-    when (30..49) then "#e6be47"
-    when (15..29) then "#e66c47"
-    else           "#c71c1c"
+    when (70..89)  then "#d1e647"
+    when (50..69)  then "#e6e147"
+    when (30..49)  then "#e6be47"
+    when (15..29)  then "#e66c47"
+    else                "#c71c1c"
     end
 end
 
@@ -50,8 +50,8 @@ def fetch_fight(slug)
 end
 
 def valid_fight_name_error(name)
-  if name.match(/[^a-zA-Z0-9 ]/)
-    "Fight name can only contain letters, numbers, and spaces"
+  if name.match(/[^a-zA-Z0-9 \(\)]/)
+    "Fight name can only contain letters, numbers, parentheses, and spaces"
   elsif fight_name_taken?(name)
     "That name is already taken!"
   end

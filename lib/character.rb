@@ -1,7 +1,11 @@
 require_relative 'name_iterator'
+require_relative 'event_buffer'
 
 class Character
-  attr_reader :name, :hp, :max_hp
+  attr_reader :hp, :max_hp
+  attr_accessor :name, :char_class, :size, :race, :state, :notes, :events
+
+  STATES = %w(Normal Prone Poisoned Flanked Blinded Restrained Grappled Incapacutated)
 
   include NameIterator
 
@@ -9,6 +13,14 @@ class Character
     @name = name
     @hp = hp.to_i
     @max_hp = @hp
+    @state = "Normal"
+    @size = "Medium"
+    @events = EventBuffer.new(3)
+    @events << "Character Created!"
+  end
+
+  def self.states
+    STATES
   end
 
   def is_player?
@@ -22,11 +34,13 @@ class Character
   def take_damage(amount)
     @hp -= amount.to_i
     @hp = @hp <= 0 ? 0 : @hp
+    @events << "Took #{amount} points of damage!"
   end
 
   def heal(amount)
     @hp += amount.to_i
     @hp = @hp > @max_hp ? @max_hp : @hp
+    @events << "Healed #{amount} points!"
   end
 
   def copy(duplicate: false)

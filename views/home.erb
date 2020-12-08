@@ -38,17 +38,11 @@
     </a>
 
     <div class="fight-buttons">
-      <form action="/<%= slugify(fight.name) %>/delete" method="POST">
-        <button class="fight delete" type="submit">Delete</button>
-      </form>
-
-      <form action="/<%= slugify(fight.name) %>/duplicate" method="POST">
-        <button class="fight duplicate" type="submit">Duplicate</button>
-      </form>
-
-      <form action="/<%= slugify(fight.name) %>/restart" method="POST">
-        <button class="fight restart" type="submit">Restart</button>
-      </form>
+      <% ["delete", "duplicate", "restart", "edit"].each do |type| %>
+        <form action="/<%= slugify(fight.name) %>/<%= type %>" method="POST">
+          <button class="fight <%= type %>" type="submit"><%= type.capitalize %></button>
+        </form>
+      <% end %>
     </div>
   </div>
 <% end %>

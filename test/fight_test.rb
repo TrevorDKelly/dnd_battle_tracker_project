@@ -22,6 +22,14 @@ class FightTest < Minitest::Test
     end
   end
 
+  def count_events(fight)
+    number = 0
+    fight.events.each do |event|
+      number += 1
+    end
+    number
+  end
+
   # Tests
   def test_create_fight
     fight = Fight.new("battle")
@@ -29,9 +37,18 @@ class FightTest < Minitest::Test
     assert_equal "battle", fight.name
     assert_equal [], fight.characters
     assert_equal "Prepping", fight.status
+    assert_equal Date.today, fight.dates[0]
   end
 
-  def test_add_charcter
+  def test_create_fight_creates_event
+    create_fight
+
+    @fight.events.each do |event|
+      assert_equal "Fight Created!", event
+    end
+  end
+
+  def test_add_charcter_with_npc_default
     create_fight
 
     @fight.add_character('npc', 10)
@@ -47,6 +64,14 @@ class FightTest < Minitest::Test
 
     assert_equal 1, @fight.characters.size
     assert_equal Player, @fight.characters[0].class
+  end
+
+  def test_add_character_adds_event
+    create_fight
+
+    @fight.add_character('npc', 10)
+
+    assert_equal 2, count_events(@fight)
   end
 
   def test_add_multiple_characters
@@ -67,6 +92,15 @@ class FightTest < Minitest::Test
 
     assert_equal 1, @fight.characters.size
     assert_includes @fight.characters, @npc
+  end
+
+  def test_shovel_adds_event
+    create_fight
+    create_npc
+
+    @fight << @npc
+
+    assert_equal 2, count_events(@fight)
   end
 
   def test_duplicate_fight
@@ -133,5 +167,16 @@ class FightTest < Minitest::Test
     [strongest, weak, player].each { |char| @fight << char }
 
     assert_equal strongest, @fight.strongest_npc
+  end
+
+  def test_start_fight
+    create_fight
+
+    @fight.start_fight
+
+    assert_equal Date.today, @fight.dates[1]
+    assert_equal "Fight Started!", @fight.status
+
+    assert_equal 2, count_events(@fight)
   end
 end

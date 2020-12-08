@@ -10,19 +10,28 @@ class FightTest < Minitest::Test
   # helper methods
   include CharacterCreatorMethods
 
+  def count_events(character)
+    number = 0
+    character.events.each do |_|
+      number += 1
+    end
+    number
+  end
+
   # Tests
   def test_create_npc
-    create_npc
+    npc = Npc.new('npc', 10)
 
-    assert_equal 'npc', @npc.name
-    assert_equal 10, @npc.hp
+    assert_equal 'npc', npc.name
+    assert_equal 10, npc.hp
   end
 
   def test_create_player
-    create_player
+    player = Player.new('player', 10)
 
-    assert_equal 'player', @player.name
-    assert_equal 10, @player.hp
+    assert_equal 'player', player.name
+    assert_equal 10, player.hp
+    assert_equal 1, count_events(player)
   end
 
   def test_is_player?
@@ -44,6 +53,7 @@ class FightTest < Minitest::Test
     @npc.take_damage(5)
 
     assert_equal 5, @npc.hp
+    assert_equal 2, count_events(@npc)
   end
 
   def test_take_damage_string
@@ -51,6 +61,7 @@ class FightTest < Minitest::Test
     @npc.take_damage('5')
 
     assert_equal 5, @npc.hp
+    assert_equal 2, count_events(@npc)
   end
 
   def test_take_damage_does_not_go_negative
@@ -66,6 +77,7 @@ class FightTest < Minitest::Test
     @npc.heal(4)
 
     assert_equal 9, @npc.hp
+    assert_equal 3, count_events(@npc)
   end
 
   def test_heal_does_not_excced_max
@@ -108,5 +120,15 @@ class FightTest < Minitest::Test
 
     assert_equal @npc.name, new_npc.name
     assert_equal @npc.hp, new_npc.hp
+  end
+
+  def test_get_states
+    states = Character.states
+
+    assert_instance_of Array, states
+
+    states.each do |state|
+      assert_equal String, state.class
+    end
   end
 end

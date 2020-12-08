@@ -200,6 +200,13 @@ button.restart {
   text-shadow: 0px 1px 0px #bee6bf;
 }
 
+button.edit {
+    box-shadow: inset 0px 1px 0px 0px #fffec4;
+    background: linear-gradient(to bottom, #fffec4 5%, #d1d158 100%);
+    border: 1px solid #d1d158;
+    text-shadow: 0px 1px 0px #fffec4;
+}
+
 .character-title {
   display: inline-block;
   margin: 0.3em;
