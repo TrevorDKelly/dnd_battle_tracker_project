@@ -76,6 +76,7 @@ def valid_fight_name_error(name)
   end
 end
 
+# Paths
 get "/" do
   @fights = session[:fights]
   erb :home
@@ -103,7 +104,12 @@ end
 # Fight Page
 get "/:fight_name" do
   fetch_fight(params[:fight_name])
-  erb :fight
+  if @fight
+    erb :fight
+  else
+    session[:error] = "That fight could not be found"
+    redirect "/"
+  end
 end
 
 # Delete Fight
@@ -135,16 +141,26 @@ end
 # New Character
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
-  erb :new_character
+  if @fight
+    erb :new_character
+  else
+    session[:error] = "That fight could not be found"
+    redirect "/"
+  end
 end
 
 post "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
 
-  @name = params[:name]
-  @hp = params[:hp]
+  if @fight
+    @name = params[:name]
+    @hp = params[:hp]
 
-  @fight.add_character(@name, @hp)
+    @fight.add_character(@name, @hp)
 
-  redirect "/" + slugify(@fight.name)
+    redirect "/" + slugify(@fight.name)
+  else
+    session[:error] = "That fight could not be found"
+    redirect "/"
+  end
 end
