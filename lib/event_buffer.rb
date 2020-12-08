@@ -15,4 +15,8 @@ class EventBuffer
       yield event
     end
   end
+
+  def last
+    @buffer.last
+  end
 end

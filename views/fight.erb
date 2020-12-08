@@ -16,15 +16,27 @@
 
 <% @fight.characters.each do |character| %>
   <div class="list-box character">
-    <div class="character-title">
-      <h3><%= character.name %></h3>
+    <div class='character-overview'>
+      <div class="character-title">
+        <h3><%= character.name %></h3>
 
-      <div class="health-bar">
-        <div class="health-bar fill" style="<%= health_fill(character) %>"></div>
-        <h4>HP (remaining / max) <%= character.hp %> / <%= character.max_hp %></h4>
+        <div class="health-bar">
+          <div class="health-bar fill" style="<%= health_fill(character) %>"></div>
+          <h4>HP (remaining / max) <%= character.hp %> / <%= character.max_hp %></h4>
+        </div>
+      </div>
+
+      <div class="character-basics">
+        <% each_available_stat(character) do |name, value| %>
+          <div class='character-info'>
+            <p>
+              <span class="character-info stat"><%= name %>:</span>
+              <span class="character-info value"><%= value %></span>
+            </p>
+          </div>
+        <% end %>
       </div>
     </div>
-
 
     <div class="fight-buttons">
       <form action="/<%= slugify(@fight.name) %>/delete" method="POST">

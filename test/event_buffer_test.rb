@@ -34,5 +34,12 @@ class EventBufferTest < MiniTest::Test
 
     assert_equal 7, number
   end
+
+  def test_last
+    @buffer << 'event 1'
+    @buffer << 'event 2'
+
+    assert_equal 'event 2', @buffer.last
+  end
 end
 

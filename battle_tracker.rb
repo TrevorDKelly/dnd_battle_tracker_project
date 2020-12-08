@@ -22,10 +22,29 @@ helpers do
     names.map { |name| name.gsub(' ', '-') }.join('/')
   end
 
-  def health_fill(character)
-    percent = (character.hp / character.max_hp) * 100
+  def health_fill(object)
+    percent = if object.kind_of? Character
+                (object.hp / object.max_hp) * 100
+              elsif object.kind_of? Fight
+                object.npc_health_percentage
+              end
+
     color = health_color(percent)
     "width:#{percent}%; background:#{color};"
+  end
+
+  def each_available_stat(character)
+    stats = [:char_class, :race, :size]
+    type = character.is_npc? ? 'NPC' : 'Player'
+
+    yield('Type', type)
+
+    stats.each do |stat|
+      name = stat.to_s.gsub('_', ' ').capitalize
+      value = character.public_send(stat)
+
+      yield(name, value) if value
+    end
   end
 end
 

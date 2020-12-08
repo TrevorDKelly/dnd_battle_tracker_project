@@ -5,8 +5,8 @@
 <% end %>
 
 <% @fights.each do |fight| %>
-  <div class="list-box fight">
-    <a href="/<%= slugify(fight.name) %>">
+  <a href="/<%= slugify(fight.name) %>">
+    <div class="list-box fight">
       <div class="name">
         <h3 class="fight-name"><%= fight.name %></h3>
         <p class="fight-status">Status: <%= fight.status %></p>
@@ -19,8 +19,10 @@
         </div>
 
         <div class="info-box">
-          <h4>Player Characters</h4>
-          <p><%= fight.player_count %></p>
+          <h4>NPCs Health</h4>
+          <div class="health-bar fight">
+            <div class="health-bar fill" style="<%= health_fill(fight) %>"></div>
+          </div>
         </div>
 
         <div class="info-box">
@@ -28,14 +30,28 @@
           <p>
             <% if fight.npc_count > 0 %>
               <%= fight.strongest_npc.name %>
-              HP:<%= fight.strongest_npc.max_hp %>
+            <em>HP:<%= fight.strongest_npc.max_hp %></em>
             <% else %>
               Currently No NPCs
             <% end %>
           </p>
         </div>
+
+        <div class="info-box">
+          <h4>Player Characters</h4>
+          <p><%= fight.player_count %></p>
+        </div>
+
+        <div class="info-box">
+          <h4>Date Created</h4>
+          <p><%= fight.dates[0] %></p>
+        </div>
+
+        <div class="info-box">
+          <h4>Last Event</h4>
+          <p><%= fight.events.last %></p>
+        </div>
       </div>
-    </a>
 
     <div class="fight-buttons">
       <% ["delete", "duplicate", "restart", "edit"].each do |type| %>
@@ -44,5 +60,6 @@
         </form>
       <% end %>
     </div>
-  </div>
+    </div>
+  </a>
 <% end %>

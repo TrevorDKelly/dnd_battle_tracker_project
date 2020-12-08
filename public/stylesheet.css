@@ -105,6 +105,7 @@ header > h1 {
 
 .list-box a {
   text-decoration: none;
+  height: 100%;
 }
 
 .list-box.fight {
@@ -119,7 +120,6 @@ header > h1 {
 .fight-info {
   display: inline-block;
   margin: auto;
-  padding: 0.4em;
   width: 60%;
   color: black;
 }
@@ -129,15 +129,20 @@ header > h1 {
 }
 
 .fight-buttons {
-  float:right;
-  width:auto;
+  display:inline-block;
+  width:10%;
+}
+
+.fight-buttons form {
+  float: right;
 }
 
 .info-box {
   display: inline-block;
-  width: 32%;
+  width: 31%;
   text-align: center;
   font-size: 15px;
+  margin: 0.2em 0;
 }
 
 .info-box h4 {
@@ -149,10 +154,8 @@ header > h1 {
 .name {
   display: inline-block;
   width: 25%;
-  border: none;
-  box-shadow: none;
   padding: 0.4em;
-  color: black;
+  vertical-align: top;
 }
 
 .fight-name {
@@ -172,11 +175,10 @@ button.fight {
 	border-radius:6px;
 	display:inline-block;
 	cursor:pointer;
-	color: black;
-	font-family:Arial;
 	font-size: 0.7em;
 	font-weight:bold;
 	text-decoration:none;
+  margin: 0.1em;
 }
 
 button.delete {
@@ -210,14 +212,16 @@ button.edit {
 .character-title {
   display: inline-block;
   margin: 0.3em;
-  width: 90%;
+  width: 95%;
   border-bottom: 3px solid black;
+  vertical-align: top;
 }
 
 .character-title h3 {
   display: inline-block;
   margin: auto;
   width: 25%;
+  vertical-align: top;
 }
 
 .health-bar {
@@ -229,6 +233,12 @@ button.edit {
   border: 1px solid black;
   border-radius: 15px;
   min-height: 20px;
+}
+
+.health-bar.fight {
+  min-height: 10px;
+  margin-top: 0.3em;
+  margin-bottom: 0.1em;
 }
 
 .health-bar.fill {
@@ -245,5 +255,35 @@ button.edit {
   top:0;
   left:10;
   display: inline-block;
+  margin: auto;
+}
+
+.character-overview {
+  display: inline-block;
+  width: 85%;
+}
+
+.character-basics {
+  display: inline-block;
+  margin: 0 0.3em;
+}
+
+.character-info {
+  display: inline-block;
+  margin: 0 1em;
+  vertical-align: top;
+}
+
+.character-info p {
+  margin: auto;
+  font-size: 16px;
+}
+
+.character-info.stat {
+  margin: auto;
+  font: italic bold 16px sans-serif;
+}
+
+.character-info.value {
   margin: auto;
 }

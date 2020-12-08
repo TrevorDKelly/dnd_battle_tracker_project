@@ -3,10 +3,15 @@ home page
     fight progress
       npc hp total -- start v current
       player hp total -- start v current
+    dates
+      created/started
+      Last update
     restart
       reset all stats
       change status to prepping
 fight page
+  status with title
+  events
   fight notes
   Edit - in fight
   roll initiative
@@ -45,18 +50,9 @@ to do
       gather posible states
   sinatra tests
 
-characters
-  initiative
-  status (prone, ....
-    list of possible from class method
-  notes
 
-fight
-  notes
-  dates
-    created
-    started
-    last change
-  progress
-    last 10 or so events
-
+character box
+  state
+  take damage
+  heal
+  edit

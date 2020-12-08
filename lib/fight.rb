@@ -28,12 +28,14 @@ class Fight
 
     @characters << character
     @events << "#{character.name} created!"
+    @dates[2] = Date.today
   end
 
   def <<(character)
     @characters << character
 
     @events << "#{character.name} created!"
+    @dates[2] = Date.today
   end
 
   def npc_count
@@ -67,5 +69,18 @@ class Fight
     @dates[2] = Date.today
     @status = "Fight Started!"
     @events << "Fight Started!"
+  end
+
+  def npc_health_percentage
+    return 0 if npcs.empty?
+    hp_left = 0
+    full_hp = 0
+
+    npcs.each do |npc|
+      hp_left += npc.hp
+      full_hp += npc.max_hp
+    end
+
+    hp_left/full_hp * 100
   end
 end
