@@ -34,6 +34,13 @@ class FightTest < Minitest::Test
     assert_equal 1, count_events(player)
   end
 
+  def test_new_character_starting_stats
+    create_npc
+
+    assert_equal 'Normal', @npc.condition
+    assert_equal 0, @npc.initiative
+  end
+
   def test_is_player?
     create_characters
 
@@ -130,5 +137,14 @@ class FightTest < Minitest::Test
     states.each do |state|
       assert_equal String, state.class
     end
+  end
+
+  def test_max_hp
+    create_npc
+
+    @npc.max_hp = 15
+
+    assert_equal 15, @npc.max_hp
+    assert_equal 15, @npc.hp
   end
 end

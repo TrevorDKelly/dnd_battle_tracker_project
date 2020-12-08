@@ -22,7 +22,7 @@
 
         <div class="health-bar">
           <div class="health-bar fill" style="<%= health_fill(character) %>"></div>
-          <h4>HP (remaining / max) <%= character.hp %> / <%= character.max_hp %></h4>
+          <h4>HP: <%= character.hp %> / <%= character.max_hp %></h4>
         </div>
       </div>
 
@@ -36,19 +36,42 @@
           </div>
         <% end %>
       </div>
+
+      <div class="character-interactive">
+        <div class="change-hp">
+          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take-damage" method="POST">
+            <input type="number">
+            <button type='submit'>Take Damage!</button>
+          </form>
+        </div>
+
+        <div class="change-hp">
+          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal-damage" method="POST">
+            <input type="number">
+            <button type='submit'>Heal Damage!</button>
+          </form>
+        </div>
+
+        <div class="change-condition">
+          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/change-condition" method="POST">
+            <input type="text">
+            <button type='submit'>Change Condition</button>
+          </form>
+        </div>
+      </div>
     </div>
 
-    <div class="fight-buttons">
-      <form action="/<%= slugify(@fight.name) %>/delete" method="POST">
+    <div class="right-buttons">
+      <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/delete" method="POST">
         <button class="fight delete" type="submit">Delete</button>
       </form>
 
-      <form action="/<%= slugify(@fight.name) %>/duplicate" method="POST">
+      <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/duplicate" method="POST">
         <button class="fight duplicate" type="submit">Duplicate</button>
       </form>
 
-      <form action="/<%= slugify(@fight.name) %>/restart" method="POST">
-        <button class="fight restart" type="submit">Full Heal</button>
+      <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/edit" method="POST">
+        <button class="fight edit" type="submit">Edit</button>
       </form>
     </div>
 

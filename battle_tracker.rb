@@ -34,7 +34,7 @@ helpers do
   end
 
   def each_available_stat(character)
-    stats = [:char_class, :race, :size]
+    stats = [:initiative, :char_class, :race, :size]
     type = character.is_npc? ? 'NPC' : 'Player'
 
     yield('Type', type)

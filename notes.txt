@@ -27,6 +27,7 @@ restart fight
 
 
 to do
+  redirect bad inputs
   edit button
     on each fight on home page
       add path
@@ -53,6 +54,17 @@ to do
 
 character box
   state
+    can have more than 1
+    show current
+    change buttton
+      open drop down
+        jquery
+        radio boxes
   take damage
+    form box
+    apply button
   heal
+    form box
+    apply button
   edit
+    goes to edit page

@@ -53,7 +53,7 @@
         </div>
       </div>
 
-    <div class="fight-buttons">
+    <div class="right-buttons">
       <% ["delete", "duplicate", "restart", "edit"].each do |type| %>
         <form action="/<%= slugify(fight.name) %>/<%= type %>" method="POST">
           <button class="fight <%= type %>" type="submit"><%= type.capitalize %></button>

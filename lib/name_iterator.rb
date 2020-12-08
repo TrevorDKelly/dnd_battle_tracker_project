@@ -1,8 +1,8 @@
 module NameIterator
   private
 
-  def iterate_name
-    new_name = @name.clone
+  def iterate_name(name = @name)
+    new_name = name.clone
 
     match = new_name.match(/\((\d+)\)\z/)
     if match

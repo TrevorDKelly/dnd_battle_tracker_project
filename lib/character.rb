@@ -3,7 +3,8 @@ require_relative 'event_buffer'
 
 class Character
   attr_reader :hp, :max_hp
-  attr_accessor :name, :char_class, :size, :race, :state, :notes, :events
+  attr_accessor :name, :char_class, :size, :race, :condition, :notes,
+                :events, :initiative
 
   STATES = %w(Normal Prone Poisoned Flanked Blinded Restrained Grappled Incapacutated)
 
@@ -13,8 +14,8 @@ class Character
     @name = name
     @hp = hp.to_i
     @max_hp = @hp
-    @state = "Normal"
-    @size = "Medium"
+    @condition = "Normal"
+    @initiative = 0
     @events = EventBuffer.new(3)
     @events << "Character Created!"
   end
@@ -41,6 +42,11 @@ class Character
     @hp += amount.to_i
     @hp = @hp > @max_hp ? @max_hp : @hp
     @events << "Healed #{amount} points!"
+  end
+
+  def max_hp=(new)
+    @max_hp = new
+    @hp = @max_hp
   end
 
   def copy(duplicate: false)

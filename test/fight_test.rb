@@ -179,4 +179,28 @@ class FightTest < Minitest::Test
 
     assert_equal 2, count_events(@fight)
   end
+
+  def test_change_character_name_if_taken
+    create_fight
+    create_npc
+
+    @fight << @npc
+
+    @fight << Npc.new('npc', 10)
+
+    @fight.add_character('npc', 10)
+
+    assert_equal 'npc(2)', @fight.characters[1].name
+    assert_equal 'npc(3)', @fight.characters[2].name
+  end
+
+  def test_fetch_character
+    create_fight(2)
+
+    character1 = @fight.fetch_character('npc_0')
+    character2 = @fight.fetch_character('npc_1')
+
+    assert_equal 'npc_0', character1.name
+    assert_equal 'npc_1', character2.name
+  end
 end

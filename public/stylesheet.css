@@ -44,6 +44,8 @@ header > h1 {
   float: left;
 }
 
+/* Buttons */
+
 .top button {
   width: 15em;
   height: 3em;
@@ -65,108 +67,6 @@ header > h1 {
 
 .top button.home-button {
 	background:linear-gradient(to bottom, #c7dbfa 5%, #83c96f 100%);
-}
-
-.flash {
-  min-width: 200px;
-  max-width: 60%;
-  height: 2em;
-  text-align: center;
-  margin: auto;
-  border-radius: 1em;
-}
-
-.flash p {
-  display: inline-block;
-  margin: 0.5em;
-  font-weight: bold;
-}
-
-.flash.error {
-  background: #FFD700;
-}
-
-.flash.success {
-  background: #6ded76;
-}
-
-.list-box {
-  box-shadow: 0.1em 0.1em black;
-  display: inline-block;
-  width: 98%;
-  margin: 0.2em 0em 0.2em 0em;
-  border: 0.15em solid black;
-  border-radius: 1em;
-  font: 1.1em sans-serif;
-  color: black;
-  min-height: 4em;
-  padding: 0.4em
-}
-
-.list-box a {
-  text-decoration: none;
-  height: 100%;
-}
-
-.list-box.fight {
-  background: #f7cf99;
-}
-
-.list-box.character {
-  background: #e0c9c1;
-  min-height: 2em;
-}
-
-.fight-info {
-  display: inline-block;
-  margin: auto;
-  width: 60%;
-  color: black;
-}
-
-.fight-info p {
-  margin: 0.3em;
-}
-
-.fight-buttons {
-  display:inline-block;
-  width:10%;
-}
-
-.fight-buttons form {
-  float: right;
-}
-
-.info-box {
-  display: inline-block;
-  width: 31%;
-  text-align: center;
-  font-size: 15px;
-  margin: 0.2em 0;
-}
-
-.info-box h4 {
-  margin: auto;
-  border-bottom: 2px solid black;
-  width: 85%;
-}
-
-.name {
-  display: inline-block;
-  width: 25%;
-  padding: 0.4em;
-  vertical-align: top;
-}
-
-.fight-name {
-  font: 1.2em 'Texturina', sans-serif;
-  margin: auto;
-}
-
-.fight-status {
-  margin:auto;
-  font: italic 0.8em sans-serif;
-  vertical-align: bottom;
 }
 
 button.fight {
@@ -209,6 +109,116 @@ button.edit {
     text-shadow: 0px 1px 0px #fffec4;
 }
 
+.right-buttons {
+  display:inline-block;
+  width:10%;
+}
+
+.right-buttons form {
+  float: right;
+}
+/* Flash Messages */
+
+.flash {
+  min-width: 200px;
+  max-width: 60%;
+  height: 2em;
+  text-align: center;
+  margin: auto;
+  border-radius: 1em;
+}
+
+.flash p {
+  display: inline-block;
+  margin: 0.5em;
+  font-weight: bold;
+}
+
+.flash.error {
+  background: #FFD700;
+}
+
+.flash.success {
+  background: #6ded76;
+}
+
+/* List Boxes */
+
+.list-box {
+  box-shadow: 0.1em 0.1em black;
+  display: inline-block;
+  width: 98%;
+  margin: 0.2em 0em 0.2em 0em;
+  border: 0.15em solid black;
+  border-radius: 1em;
+  font: 1.1em sans-serif;
+  color: black;
+  min-height: 4em;
+  padding: 0.4em
+}
+
+.list-box a {
+  text-decoration: none;
+  height: 100%;
+}
+
+/* Home page */
+
+.list-box.fight {
+  background: #f7cf99;
+}
+
+.fight-info {
+  display: inline-block;
+  margin: auto;
+  width: 60%;
+  color: black;
+}
+
+.fight-info p {
+  margin: 0.3em;
+}
+
+.info-box {
+  display: inline-block;
+  width: 31%;
+  text-align: center;
+  font-size: 15px;
+  margin: 0.2em 0;
+}
+
+.info-box h4 {
+  margin: auto;
+  border-bottom: 2px solid black;
+  width: 85%;
+}
+
+.name {
+  display: inline-block;
+  width: 25%;
+  padding: 0.4em;
+  vertical-align: top;
+}
+
+.fight-name {
+  font: 1.2em 'Texturina', sans-serif;
+  margin: auto;
+}
+
+.fight-status {
+  margin:auto;
+  font: italic 0.8em sans-serif;
+  vertical-align: bottom;
+}
+
+.health-bar.fight {
+  min-height: 10px;
+  margin-top: 0.3em;
+  margin-bottom: 0.1em;
+}
+
+/* fight page */
+
 .character-title {
   display: inline-block;
   margin: 0.3em;
@@ -220,8 +230,10 @@ button.edit {
 .character-title h3 {
   display: inline-block;
   margin: auto;
+  margin-left: 0.5em;
   width: 25%;
   vertical-align: top;
+  font: 20px 'Texturina', sans-serif;
 }
 
 .health-bar {
@@ -233,12 +245,6 @@ button.edit {
   border: 1px solid black;
   border-radius: 15px;
   min-height: 20px;
-}
-
-.health-bar.fight {
-  min-height: 10px;
-  margin-top: 0.3em;
-  margin-bottom: 0.1em;
 }
 
 .health-bar.fill {
@@ -258,8 +264,17 @@ button.edit {
   margin: auto;
 }
 
+/* Character Box*/
+
+.list-box.character {
+  background: #e0c9c1;
+  min-height: 2em;
+  padding: 0;
+}
+
 .character-overview {
   display: inline-block;
+  vertical-align: top;
   width: 85%;
 }
 
@@ -286,4 +301,23 @@ button.edit {
 
 .character-info.value {
   margin: auto;
+}
+
+.character-interactive {
+  margin: 0.5em;
+  display: block;
+}
+
+.character-interactive div {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.character-interactive input {
+  border-radius: 1em;
+  padding-left: 0.5em;
+}
+
+.change-hp input {
+  width: 40px;
 }

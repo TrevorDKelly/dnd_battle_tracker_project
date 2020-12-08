@@ -20,6 +20,8 @@ class Fight
   end
 
   def add_character(name, hp = 1, npc = true)
+    name = verify_name(name)
+
     character = if npc
                   Npc.new(name, hp)
                 else
@@ -32,6 +34,7 @@ class Fight
   end
 
   def <<(character)
+    character.name = verify_name(character.name)
     @characters << character
 
     @events << "#{character.name} created!"
@@ -82,5 +85,22 @@ class Fight
     end
 
     hp_left/full_hp * 100
+  end
+
+  def fetch_character(name)
+    @characters.select { |character| character.name == name }.first
+  end
+
+  private
+
+  def verify_name(name)
+    until valid_name?(name)
+      name = iterate_name(name)
+    end
+    name
+  end
+
+  def valid_name?(name)
+    @characters.none? { |character| character.name == name }
   end
 end
