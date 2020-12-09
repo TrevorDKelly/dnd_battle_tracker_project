@@ -37,7 +37,7 @@ class FightTest < Minitest::Test
   def test_new_character_starting_stats
     create_npc
 
-    assert_equal 'Normal', @npc.condition
+    assert_equal ['Normal'], @npc.conditions
     assert_equal 0, @npc.initiative
   end
 
@@ -129,13 +129,13 @@ class FightTest < Minitest::Test
     assert_equal @npc.hp, new_npc.hp
   end
 
-  def test_get_states
-    states = Character.states
+  def test_get_conditions
+    conditions = Character.conditions
 
-    assert_instance_of Array, states
+    assert_instance_of Array, conditions
 
-    states.each do |state|
-      assert_equal String, state.class
+    conditions.each do |condition|
+      assert_equal String, condition.class
     end
   end
 
@@ -146,5 +146,32 @@ class FightTest < Minitest::Test
 
     assert_equal 15, @npc.max_hp
     assert_equal 15, @npc.hp
+  end
+
+  def test_add_conditions
+    create_npc
+
+    @npc.add_condition('Prone')
+
+    assert_includes @npc.conditions, 'Prone'
+    refute_includes @npc.conditions, 'Normal'
+  end
+
+  def test_remove_condition
+    create_npc
+
+    @npc.add_condition('Prone')
+    @npc.add_condition('Flanked')
+
+    @npc.remove_condition('Prone')
+
+    assert_includes @npc.conditions, 'Flanked'
+    refute_includes @npc.conditions, 'Prone'
+    refute_includes @npc.conditions, 'Normal'
+
+    @npc.remove_condition('Flanked')
+
+    assert_includes @npc.conditions, 'Normal'
+    refute_includes @npc.conditions, 'Flanked'
   end
 end

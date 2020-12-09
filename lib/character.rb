@@ -2,11 +2,11 @@ require_relative 'name_iterator'
 require_relative 'event_buffer'
 
 class Character
-  attr_reader :hp, :max_hp
-  attr_accessor :name, :char_class, :size, :race, :condition, :notes,
+  attr_reader :hp, :max_hp, :conditions
+  attr_accessor :name, :char_class, :size, :race, :notes,
                 :events, :initiative
 
-  STATES = %w(Normal Prone Poisoned Flanked Blinded Restrained Grappled Incapacutated)
+  CONDITIONS = %w(Normal Prone Poisoned Flanked Blinded Restrained Grappled Incapacitated Unconscious)
 
   include NameIterator
 
@@ -14,14 +14,14 @@ class Character
     @name = name
     @hp = hp.to_i
     @max_hp = @hp
-    @condition = "Normal"
+    @conditions = ["Normal"]
     @initiative = 0
     @events = EventBuffer.new(3)
     @events << "Character Created!"
   end
 
-  def self.states
-    STATES
+  def self.conditions
+    CONDITIONS
   end
 
   def is_player?
@@ -36,6 +36,21 @@ class Character
     @hp -= amount.to_i
     @hp = @hp <= 0 ? 0 : @hp
     @events << "Took #{amount} points of damage!"
+
+    if @hp == 0
+      add_condition "Unconscious"
+      @events << "#{@name} has fallen unconscious!"
+    end
+  end
+
+  def add_condition(condition)
+    @conditions << condition
+    @conditions.delete('Normal')
+  end
+
+  def remove_condition(condition)
+    @conditions.delete(condition)
+    @conditions << 'Normal' if @conditions.empty?
   end
 
   def heal(amount)
