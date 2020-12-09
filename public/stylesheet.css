@@ -179,6 +179,7 @@ button.edit {
   font-weight: bold;
   color: white;
   cursor: pointer;
+  width: 105px;
 }
 
 button.damage {

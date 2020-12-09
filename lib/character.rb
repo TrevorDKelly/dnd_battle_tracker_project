@@ -64,6 +64,11 @@ class Character
     @events << "Returned to full health!"
   end
 
+  def full_damage
+    @hp = 0
+    @events << "#{@name} has fallen unconscious!"
+  end
+
   def max_hp=(new)
     @max_hp = new
     @hp = @max_hp

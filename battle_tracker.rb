@@ -188,26 +188,34 @@ end
 
 # Take and Heal Damage
 
-post "/:fight_name/:character_name/take_damage" do
+post "/:fight_name/:character_name/take_damage/*" do
   fetch_fight(params[:fight_name])
   fetch_character(params[:character_name])
 
   damage = params[:amount]
 
-  @character.take_damage(damage)
-  @fight.events << "#{@character.name} took #{damage} points of damage"
+  if params['splat'].first == 'full'
+    @character.full_damage
+  else
+    @character.take_damage(damage)
+    @fight.events << "#{@character.name} took #{damage} points of damage"
+  end
 
   redirect "/#{slugify(@fight.name)}"
 end
 
-post "/:fight_name/:character_name/heal_damage" do
+post "/:fight_name/:character_name/heal_damage/*" do
   fetch_fight(params[:fight_name])
   fetch_character(params[:character_name])
 
   heal = params[:amount]
 
-  @character.heal(heal)
-  @fight.events << "#{@character.name} healed #{heal} points"
+  if params['splat'].first == 'full'
+    @character.full_heal
+  else
+    @character.heal(heal)
+    @fight.events << "#{@character.name} healed #{heal} points"
+  end
 
   redirect "/#{slugify(@fight.name)}"
 end
