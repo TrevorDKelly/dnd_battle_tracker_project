@@ -140,6 +140,33 @@ post "/:fight_name/duplicate" do
   redirect "/"
 end
 
+# edit fight
+get "/:fight_name/edit" do
+  fetch_fight(params[:fight_name])
+  @name = @fight.name
+
+  erb :edit_fight
+end
+
+post "/:fight_name/edit" do
+  fetch_fight(params[:fight_name])
+  @name = params[:name].strip
+
+  redirect "/#{slugify(@name)}" if @name == @fight.name
+
+  error = valid_fight_name_error(@name)
+
+  if error
+    session[:error] = error
+    erb :edit_fight
+  else
+    @fight.name = @name
+    session[:success] = "Fight Name Changed!"
+    @fight.events << "Fight name Changed"
+    redirect "/#{slugify(@name)}"
+  end
+end
+
 # New Character
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])

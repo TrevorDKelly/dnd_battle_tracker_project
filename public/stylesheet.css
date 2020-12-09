@@ -28,8 +28,9 @@ header > h1 {
 }
 
 .title h2 {
-  font: bold 2em serif;
+  font: bold 2.5em serif;
   margin: auto;
+  display: inline-block;
 }
 
 .top a {
@@ -150,10 +151,17 @@ button.restart {
 }
 
 button.edit {
-    box-shadow: inset 0px 1px 0px 0px #fffec4;
-    background: linear-gradient(to bottom, #fffec4 5%, #d1d158 100%);
-    border: 1px solid #d1d158;
-    text-shadow: 0px 1px 0px #fffec4;
+  box-shadow: inset 0px 1px 0px 0px #fffec4;
+  background: linear-gradient(to bottom, #fffec4 5%, #d1d158 100%);
+  border: 1px solid #d1d158;
+  text-shadow: 0px 1px 0px #fffec4;
+}
+
+.title button.edit {
+  width: 5em;
+  height: 2.5em;
+  padding: 0;
+  vertical-align: 50%;
 }
 
 .right-buttons {

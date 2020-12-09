@@ -54,11 +54,15 @@
       </div>
 
     <div class="right-buttons">
-      <% ["delete", "duplicate", "restart", "edit"].each do |type| %>
+      <% ["delete", "duplicate", "restart"].each do |type| %>
         <form action="/<%= slugify(fight.name) %>/<%= type %>" method="POST">
           <button class="fight <%= type %>" type="submit"><%= type.capitalize %></button>
         </form>
       <% end %>
+
+        <form action="/<%= slugify(fight.name) %>/edit" method="GET">
+          <button class="fight edit" type="submit">Edit</button>
+        </form>
     </div>
     </div>
   </a>
