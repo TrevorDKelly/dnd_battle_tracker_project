@@ -24,7 +24,7 @@ helpers do
 
   def health_fill(object)
     percent = if object.kind_of? Character
-                (object.hp / object.max_hp) * 100
+                (object.hp.to_f / object.max_hp) * 100
               elsif object.kind_of? Fight
                 object.npc_health_percentage
               end
@@ -66,6 +66,12 @@ end
 def fetch_fight(slug)
   name = slug.gsub('-', ' ')
   @fight = session[:fights].select { |fight| fight.name == name}.first
+
+  fight_not_found unless @fight
+end
+
+def fetch_character(name)
+  @character = @fight.fetch_character(name)
 end
 
 def valid_fight_name_error(name)
@@ -76,6 +82,11 @@ def valid_fight_name_error(name)
   elsif name.empty?
     "Name can't be empty!"
   end
+end
+
+def fight_not_found
+  session[:error] = "That fight could not be found"
+  redirect "/"
 end
 
 # Paths
@@ -106,23 +117,16 @@ end
 # Fight Page
 get "/:fight_name" do
   fetch_fight(params[:fight_name])
-  if @fight
-    erb :fight
-  else
-    session[:error] = "That fight could not be found"
-    redirect "/"
-  end
+
+  erb :fight
 end
 
 # Delete Fight
 post "/:fight_name/delete" do
   fetch_fight(params[:fight_name])
-  if @fight
-    session[:success] = "#{@fight.name} was deleted"
-    session[:fights].delete(@fight)
-  else
-    session[:error] = "That fight could not be found"
-  end
+
+  session[:success] = "#{@fight.name} was deleted"
+  session[:fights].delete(@fight)
 
   redirect "/"
 end
@@ -130,12 +134,9 @@ end
 # Duplicate Fight
 post "/:fight_name/duplicate" do
   fetch_fight(params[:fight_name])
-  if @fight
-    session[:fights] << @fight.duplicate
-    session[:success] = "#{@fight.name} was duplicated!"
-  else
-    session[:error] = "That fight could not be found"
-  end
+
+  session[:fights] << @fight.duplicate
+  session[:success] = "#{@fight.name} was duplicated!"
 
   redirect "/"
 end
@@ -170,26 +171,43 @@ end
 # New Character
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
-  if @fight
-    erb :new_character
-  else
-    session[:error] = "That fight could not be found"
-    redirect "/"
-  end
+
+  erb :new_character
 end
 
 post "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
 
-  if @fight
-    @name = params[:name]
-    @hp = params[:hp]
+  @name = params[:name]
+  @hp = params[:hp]
 
-    @fight.add_character(@name, @hp)
+  @fight.add_character(@name, @hp)
 
-    redirect "/" + slugify(@fight.name)
-  else
-    session[:error] = "That fight could not be found"
-    redirect "/"
-  end
+  redirect "/" + slugify(@fight.name)
+end
+
+# Take and Heal Damage
+
+post "/:fight_name/:character_name/take_damage" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  damage = params[:amount]
+
+  @character.take_damage(damage)
+  @fight.events << "#{@character.name} took #{damage} points of damage"
+
+  redirect "/#{slugify(@fight.name)}"
+end
+
+post "/:fight_name/:character_name/heal_damage" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  heal = params[:amount]
+
+  @character.heal(heal)
+  @fight.events << "#{@character.name} healed #{heal} points"
+
+  redirect "/#{slugify(@fight.name)}"
 end

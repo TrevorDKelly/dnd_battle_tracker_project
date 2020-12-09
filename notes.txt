@@ -16,13 +16,6 @@ restart fight
 
 
 to do
-  edit button
-    on each fight on home page
-      add path
-        new edit page
-        post from page
-
-    create edit page
   restart button
     heal all characters
       full heal character method
@@ -36,7 +29,7 @@ to do
       gather posible states
   sinatra tests
   paths for take damage and heal
-
+  add "no Characters" and "no fights" messages if htere are none
 
 character box
   state
@@ -55,12 +48,7 @@ character box
   edit
     goes to edit page
 
-edit button
-  route fight name / edit
-  go to edit page
-    fight name filled
-  post to new route
-    verify
-      if same then yellow flash
-      other verifications
-  redirect to home
+tkae and heal damage
+  format buttons
+    like right buttons
+

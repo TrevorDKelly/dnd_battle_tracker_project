@@ -1,6 +1,5 @@
 main {
-  margin: 3em;
-  margin-top: 2em;
+  margin: 0em 3em;
 }
 
 body > header {
@@ -172,6 +171,24 @@ button.edit {
 .right-buttons form {
   float: right;
 }
+
+.character-interactive button {
+  border-radius: 0 1em 1em 0;
+  border-left: none;
+  height: 26px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+button.damage {
+  background: #8f0000;
+}
+
+button.heal {
+  background: #0a8f00;
+}
+
 /* Flash Messages */
 
 .flash {
@@ -346,12 +363,12 @@ button.edit {
 
 .character-info p {
   margin: auto;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .character-info.stat {
   margin: auto;
-  font: italic bold 16px sans-serif;
+  font: italic bold 14px sans-serif;
 }
 
 .character-info.value {
@@ -369,8 +386,10 @@ button.edit {
 }
 
 .character-interactive input {
-  border-radius: 1em;
+  border-radius: 1em 0 0 1em;
+  border-right: none;
   padding-left: 0.5em;
+  height: 20px;
 }
 
 .change-hp input {

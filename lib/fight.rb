@@ -84,7 +84,7 @@ class Fight
       full_hp += npc.max_hp
     end
 
-    hp_left/full_hp * 100
+    hp_left.to_f/full_hp * 100
   end
 
   def fetch_character(name)

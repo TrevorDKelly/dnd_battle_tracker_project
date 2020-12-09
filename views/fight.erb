@@ -40,16 +40,14 @@
 
       <div class="character-interactive">
         <div class="change-hp">
-          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take-damage" method="POST">
-            <input type="number">
-            <button type='submit'>Take Damage!</button>
+          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take_damage" method="POST">
+            <input type="number" min='0' name="amount"><button class='damage' type='submit'>Take Damage!</button>
           </form>
         </div>
 
         <div class="change-hp">
-          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal-damage" method="POST">
-            <input type="number">
-            <button type='submit'>Heal Damage!</button>
+          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal_damage" method="POST">
+            <input type="number" min='0' name="amount"><button class="heal" type='submit'>Heal Damage!</button>
           </form>
         </div>
 
