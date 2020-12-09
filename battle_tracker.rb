@@ -73,6 +73,8 @@ def valid_fight_name_error(name)
     "Fight name can only contain letters, numbers, parentheses, and spaces"
   elsif fight_name_taken?(name)
     "That name is already taken!"
+  elsif name.empty?
+    "Name can't be empty!"
   end
 end
 
@@ -88,7 +90,7 @@ get "/new_fight" do
 end
 
 post "/new_fight" do
-  @name = params[:name]
+  @name = params[:name].strip
 
   error = valid_fight_name_error(@name)
 

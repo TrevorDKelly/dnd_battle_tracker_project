@@ -23,7 +23,6 @@ to do
         post from page
 
     create edit page
-  structure new fight page
   restart button
     heal all characters
       full heal character method
@@ -36,6 +35,7 @@ to do
       poison, prone, ...
       gather posible states
   sinatra tests
+  paths for take damage and heal
 
 
 character box
@@ -54,3 +54,13 @@ character box
     apply button
   edit
     goes to edit page
+
+edit button
+  route fight name / edit
+  go to edit page
+    fight name filled
+  post to new route
+    verify
+      if same then yellow flash
+      other verifications
+  redirect to home

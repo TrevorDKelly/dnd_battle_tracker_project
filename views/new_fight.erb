@@ -1,7 +1,21 @@
-<h2>Prep a New Fight</h2>
+<% content_for :top do %>
+  <div>
+    <a class="left" href="/">
+      <button class="home-button">Return Home</button>
+    </a>
+  </div>
 
-<form action="/new_fight" method="POST">
-  <label for="name">Fight Name:</lable>
-  <input type="text" id="name" name="name" value="<%= @name %>">
-  <input type="submit" value="Go To Add Characters">
-</form>
+  <div class="title">
+    <h2>Prepping a New Fight</h2>
+  </div>
+<% end %>
+
+
+<div class="one-input">
+  <form action="/new_fight" method="POST">
+    <label for="name">Fight Name:</lable>
+    <input type="text" id="name" name="name" value="<%= @name %>">
+    <p>Only letters, numbers, spaces, and parentheses allowed.</p>
+    <button>Start Adding Characters!</button>
+  </form>
+</div>
