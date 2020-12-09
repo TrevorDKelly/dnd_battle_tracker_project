@@ -18,17 +18,26 @@ restart fight
 to do
   restart button
     heal all characters
-      full heal character method
-      restart fight method
-        iterate thru all chars and full heal
+      character reset method
+        normal condition
+        full heal
+        no initiative
     reset status to prepping
   add character info
     initiative
+      bonus
+      roll and set
     state
       poison, prone, ...
       gather posible states
   sinatra tests
   add "no Characters" and "no fights" messages if htere are none
+  update tests
+    sinatra
+    character
+    fight
+    all instance vars
+    all methods
 
 character box
   condition
@@ -41,4 +50,14 @@ character box
   edit
     goes to edit page
 
+delete character
+  remove from fight's character hash
+  path
+    get fight
+    delete by name
+    add event
+    reditrect to fight
+duplicate character
 
+edit character
+  go to character create page and pre fill everything

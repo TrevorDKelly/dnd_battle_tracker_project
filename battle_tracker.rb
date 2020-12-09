@@ -168,6 +168,17 @@ post "/:fight_name/edit" do
   end
 end
 
+# Restart Fight
+post "/:fight_name/restart" do
+  fetch_fight(params[:fight_name])
+
+  @fight.characters.each(&:full_heal)
+  @fight.status = 'Prepping'
+
+  @fight.events << "Fight restarted"
+  redirect "/#{slugify(@fight.name)}"
+end
+
 # New Character
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
