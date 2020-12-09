@@ -175,7 +175,7 @@ button.edit {
 .character-interactive button {
   border-radius: 0 1em 1em 0;
   border-left: none;
-  height: 26px;
+  height: 21px;
   font-weight: bold;
   color: white;
   cursor: pointer;
@@ -187,6 +187,10 @@ button.damage {
 
 button.heal {
   background: #0a8f00;
+}
+
+button.full {
+  border-radius: 1em;
 }
 
 /* Flash Messages */
@@ -376,7 +380,7 @@ button.heal {
 }
 
 .character-interactive {
-  margin: 0.5em;
+  margin-bottom: 0.5em;
   display: block;
 }
 
@@ -389,7 +393,20 @@ button.heal {
   border-radius: 1em 0 0 1em;
   border-right: none;
   padding-left: 0.5em;
-  height: 20px;
+  height: 15px;
+}
+
+.change-hp {
+  width: 45%;
+  margin: auto;
+}
+
+.change-hp div {
+  margin: auto;
+}
+
+.change-hp form {
+  display: inline-block;
 }
 
 .change-hp input {

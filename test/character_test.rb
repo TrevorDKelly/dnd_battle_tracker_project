@@ -174,4 +174,15 @@ class FightTest < Minitest::Test
     assert_includes @npc.conditions, 'Normal'
     refute_includes @npc.conditions, 'Flanked'
   end
+
+  def test_full_heal
+    create_npc
+
+    @npc.take_damage(5)
+
+    @npc.full_heal
+
+    assert_equal 10, @npc.hp
+    assert_equal 3, count_events(@npc)
+  end
 end

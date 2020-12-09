@@ -40,15 +40,25 @@
 
       <div class="character-interactive">
         <div class="change-hp">
-          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take_damage" method="POST">
-            <input type="number" min='0' name="amount"><button class='damage' type='submit'>Take Damage!</button>
-          </form>
-        </div>
+          <div>
+            <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take_damage" method="POST">
+              <input type="number" min='0' name="amount"><button class='damage' type='submit'>Take Damage!</button>
+            </form>
 
-        <div class="change-hp">
-          <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal_damage" method="POST">
-            <input type="number" min='0' name="amount"><button class="heal" type='submit'>Heal Damage!</button>
-          </form>
+            <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/take_damage/full" method="POST">
+              <button class="damage full" type='submit'>Full Damage</button>
+            </form>
+          </div>
+
+          <div>
+            <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal_damage" method="POST">
+              <input type="number" min='0' name="amount"><button class="heal" type='submit'>Heal Damage!</button>
+            </form>
+
+            <form action="/<%= slugify(@fight.name) %>/<%= slugify(character.name) %>/heal_damage/full" method="POST">
+              <button class="heal full" type='submit'>Full Heal</button>
+            </form>
+          </div>
         </div>
 
         <div class="change-condition">

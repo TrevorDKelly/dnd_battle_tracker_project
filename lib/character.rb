@@ -59,6 +59,11 @@ class Character
     @events << "Healed #{amount} points!"
   end
 
+  def full_heal
+    @hp = @max_hp
+    @events << "Returned to full health!"
+  end
+
   def max_hp=(new)
     @max_hp = new
     @hp = @max_hp

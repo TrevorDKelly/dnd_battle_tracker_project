@@ -48,7 +48,4 @@ character box
   edit
     goes to edit page
 
-tkae and heal damage
-  format buttons
-    like right buttons
 
