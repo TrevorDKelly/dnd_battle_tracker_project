@@ -11,7 +11,9 @@
 
   <div class="title">
     <h2><%= @fight.name %></h2>
-    <button class='fight edit'>Edit</button>
+    <a href="/<%= slugify(@fight.name) %>/edit">
+      <button class='fight edit'>Edit</button>
+    </a>
   </div>
 <% end %>
 

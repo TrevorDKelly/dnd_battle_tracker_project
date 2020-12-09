@@ -28,23 +28,16 @@ to do
       poison, prone, ...
       gather posible states
   sinatra tests
-  paths for take damage and heal
   add "no Characters" and "no fights" messages if htere are none
 
 character box
-  state
+  condition
     can have more than 1
     show current
     change buttton
       open drop down
         jquery
         radio boxes
-  take damage
-    form box
-    apply button
-  heal
-    form box
-    apply button
   edit
     goes to edit page
 

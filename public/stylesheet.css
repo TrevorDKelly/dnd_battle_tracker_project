@@ -73,7 +73,7 @@ header > h1 {
 
 .one-input button {
   width: 15em;
-  height: 3em;
+  height: 2em;
   box-shadow:inset 0px 1px 0px 0px #dcecfb;
 	background:linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
 	background-color:#bddbfa;
@@ -89,6 +89,13 @@ header > h1 {
 	text-decoration:none;
 	text-shadow:0px 1px 0px white;
   margin: 1em;
+}
+
+.one-input button.cancel {
+  box-shadow:inset 0px 1px 0px 0px #e6bec4;
+	background:linear-gradient(to bottom, #d68590 5%, #e65366 100%);
+	border:1px solid #B50B33;
+	text-shadow:0px 0.5px 0px #e6bec4;
 }
 
 /* Buttons */

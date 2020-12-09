@@ -13,9 +13,12 @@
 
 <div class="one-input">
   <form action="/<%= @fight.name %>/edit" method="POST">
-    <label for="name">New Fight Name:</lable>
+    <label for="name">New Fight Name:</label>
     <input type="text" id="name" name="name" value="<%= @name %>">
     <p>Only letters, numbers, spaces, and parentheses allowed.</p>
     <button>Save Changes</button>
+    <a href="/<%= @fight.name %>">
+      <button class="cancel">Cancel</button>
+    </a>
   </form>
 </div>
