@@ -44,6 +44,12 @@ header > h1 {
   float: left;
 }
 
+.none-found h3 {
+  text-align: center;
+  color: #cccccc;
+  font-size: 30px;
+}
+
 /* One Input Page */
 
 .one-input {
@@ -306,6 +312,7 @@ button.full {
 .character-title {
   display: inline-block;
   margin: 0.3em;
+  margin-bottom: 0;
   width: 95%;
   border-bottom: 3px solid black;
   vertical-align: top;
@@ -315,6 +322,7 @@ button.full {
   display: inline-block;
   margin: auto;
   margin-left: 0.5em;
+  margin-top: -0.3em;
   width: 25%;
   vertical-align: top;
   font: 20px 'Texturina', sans-serif;
@@ -324,11 +332,10 @@ button.full {
   display: inline-block;
   position:relative;
   width: 70%;
-  margin-bottom: 0.4em;
   padding-left: 0.3em;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 15px;
-  min-height: 20px;
+  min-height: 15px;
 }
 
 .health-bar.fill {
@@ -346,6 +353,7 @@ button.full {
   left:10;
   display: inline-block;
   margin: auto;
+  font-size: 14px;
 }
 
 /* Character Box*/
@@ -388,7 +396,7 @@ button.full {
 }
 
 .character-interactive {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
   display: block;
 }
 

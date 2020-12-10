@@ -1,8 +1,3 @@
-home page
-  list of fights
-    restart
-      reset all stats
-      change status to prepping
 fight page
   status with title
   events
@@ -31,7 +26,6 @@ to do
       poison, prone, ...
       gather posible states
   sinatra tests
-  add "no Characters" and "no fights" messages if htere are none
   update tests
     sinatra
     character
@@ -50,19 +44,6 @@ character box
   edit
     goes to edit page
 
-delete character
-  remove from fight's character hash
-  path
-    get fight
-    delete by name
-    add event
-    reditrect to fight
-
 edit character
   go to character create page and pre fill everything
-
-copy
-  click duplicate
-    new one appears
-    go to pre filled character creator
 

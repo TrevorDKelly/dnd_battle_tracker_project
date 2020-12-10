@@ -4,6 +4,12 @@
   <a class="right" href="/new_fight"><button>New Fight!</button></a>
 <% end %>
 
+<% if @fights.empty? %>
+  <div class="none-found">
+    <h3>No Fights Created Yet</h3>
+  </div>
+<% end %>
+
 <% @fights.each do |fight| %>
   <a href="/<%= slugify(fight.name) %>">
     <div class="list-box fight">

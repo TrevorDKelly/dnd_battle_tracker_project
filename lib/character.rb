@@ -1,4 +1,5 @@
 require_relative 'name_iterator'
+
 class Character
   attr_reader :hp, :max_hp, :conditions
   attr_accessor :name, :char_class, :size, :race, :notes,
@@ -79,6 +80,12 @@ class Character
     else
       Player.new(name, @max_hp)
     end
+  end
+
+  def reset
+    full_heal
+    @conditions = ['Normal']
+    @last_event = 'Has been reset'
   end
 end
 

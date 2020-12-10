@@ -17,6 +17,13 @@
   </div>
 <% end %>
 
+<% if @fight.characters.empty? %>
+  <div class="none-found">
+    <h3>No Characters Created Yet</h3>
+  </div>
+<% end %>
+
+
 <% @fight.characters.each do |character| %>
   <div class="list-box character">
     <div class='character-overview'>

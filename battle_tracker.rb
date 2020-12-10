@@ -70,7 +70,8 @@ def fetch_fight(slug)
   fight_not_found unless @fight
 end
 
-def fetch_character(name)
+def fetch_character(slug)
+  name = slug.gsub('-', ' ')
   @character = @fight.fetch_character(name)
 end
 
