@@ -5,7 +5,8 @@ class Character
   attr_accessor :name, :char_class, :size, :race, :notes,
                 :last_event, :initiative
 
-  CONDITIONS = %w(Normal Prone Poisoned Flanked Blinded Restrained Grappled Incapacitated Unconscious)
+  CONDITIONS = %w(Prone Poisoned Flanked Blinded Restrained Grappled
+                  Incapacitated Unconscious)
 
   include NameIterator
 
@@ -13,13 +14,20 @@ class Character
     @name = name
     @hp = hp.to_i
     @max_hp = @hp
-    @conditions = ["Normal"]
+    @conditions = []
     @initiative = 0
     @last_event = "Character Created!"
   end
 
   def self.conditions
     CONDITIONS
+  end
+
+  def max_hp=(new)
+    full = @hp == @max_hp
+
+    @max_hp = new
+    @hp = @max_hp if (full || @hp > @max_hp)
   end
 
   def is_player?
@@ -32,7 +40,7 @@ class Character
 
   def take_damage(amount)
     @hp -= amount.to_i
-    @hp = @hp <= 0 ? 0 : @hp
+    @hp = 0 if @hp < 0
     @last_event = "Took #{amount} points of damage!"
 
     if @hp == 0
@@ -41,35 +49,36 @@ class Character
     end
   end
 
-  def add_condition(condition)
-    @conditions << condition
-    @conditions.delete('Normal')
-  end
-
-  def remove_condition(condition)
-    @conditions.delete(condition)
-    @conditions << 'Normal' if @conditions.empty?
+  def full_damage
+    take_damage(@max_hp)
   end
 
   def heal(amount)
+    return if @hp == @max_hp
     @hp += amount.to_i
-    @hp = @hp > @max_hp ? @max_hp : @hp
+    @hp = @max_hp if @hp > @max_hp
     @last_event = "Healed #{amount} points!"
+    @last_event = "Returned to full health!" if @hp == @max_hp
   end
 
   def full_heal
-    @hp = @max_hp
-    @last_event = "Returned to full health!"
+    heal(@max_hp)
   end
 
-  def full_damage
-    @hp = 0
-    @last_event = "Has fallen unconscious!"
+  def add_condition(condition)
+    @conditions << condition
+    @last_event = "Is now #{condition}"
   end
 
-  def max_hp=(new)
-    @max_hp = new
-    @hp = @max_hp
+  def remove_condition(condition)
+    has_condition = @conditions.include?(condition)
+    @last_event = "Is no longer #{condition}" if has_condition
+    @conditions.delete(condition)
+  end
+
+  def remove_all_conditions
+    @conditions = []
+    @last_event = "Returned to normal condition"
   end
 
   def copy(name, duplicate: false)
@@ -84,7 +93,7 @@ class Character
 
   def reset
     full_heal
-    @conditions = ['Normal']
+    remove_all_conditions
     @last_event = 'Has been reset'
   end
 end

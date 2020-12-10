@@ -32,6 +32,7 @@ to do
     fight
     all instance vars
     all methods
+  initiative
 
 character box
   condition
