@@ -22,14 +22,6 @@ class FightTest < Minitest::Test
     end
   end
 
-  def count_events(fight)
-    number = 0
-    fight.events.each do |event|
-      number += 1
-    end
-    number
-  end
-
   # Tests
   def test_create_fight
     fight = Fight.new("battle")
@@ -38,14 +30,7 @@ class FightTest < Minitest::Test
     assert_equal [], fight.characters
     assert_equal "Prepping", fight.status
     assert_equal Date.today, fight.dates[0]
-  end
-
-  def test_create_fight_creates_event
-    create_fight
-
-    @fight.events.each do |event|
-      assert_equal "Fight Created!", event
-    end
+    assert_equal "Fight Created!", fight.last_event
   end
 
   def test_add_charcter_with_npc_default
@@ -66,12 +51,12 @@ class FightTest < Minitest::Test
     assert_equal Player, @fight.characters[0].class
   end
 
-  def test_add_character_adds_event
+  def test_add_character_changes_last_event
     create_fight
 
     @fight.add_character('npc', 10)
 
-    assert_equal 2, count_events(@fight)
+    assert_equal "npc created!", @fight.last_event
   end
 
   def test_add_multiple_characters
@@ -94,19 +79,19 @@ class FightTest < Minitest::Test
     assert_includes @fight.characters, @npc
   end
 
-  def test_shovel_adds_event
+  def test_shovel_chages_last_event
     create_fight
     create_npc
 
     @fight << @npc
 
-    assert_equal 2, count_events(@fight)
+    assert_equal "npc created!", @fight.last_event
   end
 
   def test_duplicate_fight
     create_fight(2, 2)
 
-    new_fight = @fight.duplicate
+    new_fight = @fight.duplicate([@fight])
 
     assert_equal @fight.characters.size, new_fight.characters.size
 
@@ -125,7 +110,7 @@ class FightTest < Minitest::Test
 
     @fight.characters.each { |character| character.take_damage(5) }
 
-    new_fight = @fight.duplicate
+    new_fight = @fight.duplicate([@fight])
 
     new_fight.characters.each do |character|
       assert_equal character.max_hp, character.hp
@@ -135,9 +120,23 @@ class FightTest < Minitest::Test
   def test_duplicate_returns_fight_object
     create_fight(2, 2)
 
-    new_fight = @fight.duplicate
+    new_fight = @fight.duplicate([@fight])
 
     assert_equal Fight, new_fight.class
+  end
+
+  def test_duplicating_fight_does_not_reuse_name
+    create_fight(2, 2)
+
+    fight2 = @fight.duplicate([@fight])
+    fights = [@fight, fight2]
+    fight3 = fight2.duplicate(fights)
+    fights << fight3
+    fight4 = @fight.duplicate(fights)
+
+    assert_equal "fight(2)", fight2.name
+    assert_equal "fight(3)", fight3.name
+    assert_equal "fight(4)", fight4.name
   end
 
   def test_npcs
@@ -177,7 +176,7 @@ class FightTest < Minitest::Test
     assert_equal Date.today, @fight.dates[1]
     assert_equal "Fight Started!", @fight.status
 
-    assert_equal 2, count_events(@fight)
+    assert_equal "Fight Started!", @fight.last_event
   end
 
   def test_change_character_name_if_taken

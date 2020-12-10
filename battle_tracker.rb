@@ -135,7 +135,7 @@ end
 post "/:fight_name/duplicate" do
   fetch_fight(params[:fight_name])
 
-  session[:fights] << @fight.duplicate
+  session[:fights] << @fight.duplicate(session[:fights])
   session[:success] = "#{@fight.name} was duplicated!"
 
   redirect "/"
@@ -163,7 +163,7 @@ post "/:fight_name/edit" do
   else
     @fight.name = @name
     session[:success] = "Fight Name Changed!"
-    @fight.events << "Fight name Changed"
+    @fight.last_event = "Fight name Changed"
     redirect "/#{slugify(@name)}"
   end
 end
@@ -175,7 +175,7 @@ post "/:fight_name/restart" do
   @fight.characters.each(&:full_heal)
   @fight.status = 'Prepping'
 
-  @fight.events << "Fight restarted"
+  @fight.last_event = "Fight restarted"
   redirect "/#{slugify(@fight.name)}"
 end
 
@@ -209,7 +209,7 @@ post "/:fight_name/:character_name/take_damage/*" do
     @character.full_damage
   else
     @character.take_damage(damage)
-    @fight.events << "#{@character.name} took #{damage} points of damage"
+    @fight.last_event = "#{@character.name} took #{damage} points of damage"
   end
 
   redirect "/#{slugify(@fight.name)}"
@@ -225,8 +225,30 @@ post "/:fight_name/:character_name/heal_damage/*" do
     @character.full_heal
   else
     @character.heal(heal)
-    @fight.events << "#{@character.name} healed #{heal} points"
+    @fight.last_event = "#{@character.name} healed #{heal} points"
   end
+
+  redirect "/#{slugify(@fight.name)}"
+end
+
+# Delete Character
+post "/:fight_name/:character_name/delete" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @fight.last_event = "#{@character.name} removed"
+  @fight.characters.delete(@character)
+
+  redirect "/#{slugify(@fight.name)}"
+end
+
+#Duplicate Character
+post "/:fight_name/:character_name/duplicate" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @fight.last_event = "#{@character.name} duplicated"
+  @fight << @character
 
   redirect "/#{slugify(@fight.name)}"
 end

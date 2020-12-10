@@ -57,7 +57,12 @@ delete character
     delete by name
     add event
     reditrect to fight
-duplicate character
 
 edit character
   go to character create page and pre fill everything
+
+copy
+  click duplicate
+    new one appears
+    go to pre filled character creator
+

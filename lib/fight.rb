@@ -1,12 +1,11 @@
 require_relative 'character'
 require_relative 'name_iterator'
-require_relative 'event_buffer'
 
 require 'date'
 
 class Fight
-  attr_accessor :name, :status, :notes
-  attr_reader :characters, :dates, :events
+  attr_accessor :name, :status, :notes, :last_event
+  attr_reader :characters, :dates
 
   include NameIterator
 
@@ -15,29 +14,31 @@ class Fight
     @characters = []
     @status = 'Prepping'
     @dates = [Date.today, nil, nil]
-    @events = EventBuffer.new(15)
-    @events << "Fight Created!"
+    @last_event = "Fight Created!"
   end
 
   def add_character(name, hp = 1, npc = true)
-    name = verify_name(name)
+    new_name = verify_name(name, @characters)
 
     character = if npc
-                  Npc.new(name, hp)
+                  Npc.new(new_name, hp)
                 else
-                  Player.new(name, hp)
+                  Player.new(new_name, hp)
                 end
 
     @characters << character
-    @events << "#{character.name} created!"
+    @last_event = "#{character.name} created!"
     @dates[2] = Date.today
   end
 
   def <<(character)
-    character.name = verify_name(character.name)
+    if @characters.map(&:name).include? character.name
+      character = character.copy(verify_name(character.name, @characters))
+    end
+
     @characters << character
 
-    @events << "#{character.name} created!"
+    @last_event = "#{character.name} created!"
     @dates[2] = Date.today
   end
 
@@ -49,13 +50,16 @@ class Fight
     @characters.count(&:is_player?)
   end
 
-  def duplicate
-    fight = Fight.new(iterate_name)
+  def duplicate(existing_fights)
+    new_name = verify_name(@name, existing_fights)
+    fight = Fight.new(new_name)
 
     @characters.each do |character|
-      fight << character.copy(duplicate: true)
+      new_name = verify_name(character.name, fight.characters)
+      fight << character.copy(new_name, duplicate: true)
     end
 
+    fight.last_event = 'Fight Created!'
     fight
   end
 
@@ -71,7 +75,7 @@ class Fight
     @dates[1] = Date.today
     @dates[2] = Date.today
     @status = "Fight Started!"
-    @events << "Fight Started!"
+    @last_event = "Fight Started!"
   end
 
   def npc_health_percentage
@@ -93,14 +97,11 @@ class Fight
 
   private
 
-  def verify_name(name)
-    until valid_name?(name)
+  def verify_name(name, existing)
+    loop do
+      valid = existing.none? { |existing| existing.name == name }
+      return name if valid
       name = iterate_name(name)
     end
-    name
-  end
-
-  def valid_name?(name)
-    @characters.none? { |character| character.name == name }
   end
 end
