@@ -6,7 +6,7 @@ Minitest::Reporters.use!
 require_relative '../lib/character'
 require_relative 'character_creator_methods'
 
-class FightTest < Minitest::Test
+class CharacterTest < Minitest::Test
   # helper methods
   include CharacterCreatorMethods
 

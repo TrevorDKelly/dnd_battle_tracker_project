@@ -81,7 +81,7 @@ class Character
     @last_event = "Returned to normal condition"
   end
 
-  def copy(name, duplicate: false)
+  def copy(name)
     npc = self.class == Npc
 
     if npc

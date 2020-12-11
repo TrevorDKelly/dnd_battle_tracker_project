@@ -22,20 +22,67 @@ class FightTest < Minitest::Test
     end
   end
 
+  # Setup
+
+  def setup
+    create_fight
+  end
+
   # Tests
+
   def test_create_fight
     fight = Fight.new("battle")
 
     assert_equal "battle", fight.name
-    assert_equal [], fight.characters
+    assert_empty fight.characters
     assert_equal "Prepping", fight.status
-    assert_equal Date.today, fight.dates[0]
     assert_equal "Fight Created!", fight.last_event
   end
 
-  def test_add_charcter_with_npc_default
-    create_fight
+  # Accessor instance variables
 
+  def test_name
+    assert_equal 'fight', @fight.name
+
+    @fight.name = 'new'
+
+    assert_equal 'new', @fight.name
+  end
+
+  def test_status
+    assert_equal 'Prepping', @fight.status
+
+    @fight.status = 'status'
+
+    assert_equal 'status', @fight.status
+  end
+
+  def test_last_event
+    assert_equal "Fight Created!", @fight.last_event
+
+    @fight.last_event = 'last_event'
+
+    assert_equal 'last_event', @fight.last_event
+  end
+
+  def test_notes
+    assert_nil @fight.notes
+
+    @fight.notes = 'notes'
+
+    assert_equal 'notes', @fight.notes
+  end
+
+  # Attr Reader Instance Variables
+
+  def test_characters
+    assert_equal [], @fight.characters
+    assert_raises(NoMethodError) { @fight.characters = 'this' }
+  end
+
+  # Add and Remove characters
+
+  def test_add_charcter_with_npc_default
     @fight.add_character('npc', 10)
 
     assert_equal 1, @fight.characters.size
@@ -43,34 +90,36 @@ class FightTest < Minitest::Test
   end
 
   def test_add_player_character
-    create_fight
-
-    @fight.add_character('player', 10, false)
+    @fight.add_character('player', 10, :player)
 
     assert_equal 1, @fight.characters.size
     assert_equal Player, @fight.characters[0].class
   end
 
   def test_add_character_changes_last_event
-    create_fight
-
     @fight.add_character('npc', 10)
 
     assert_equal "npc created!", @fight.last_event
   end
 
   def test_add_multiple_characters
-    create_fight
-
-    @fight.add_character('player', 10, false)
+    @fight.add_character('player', 10, :player)
     @fight.add_character('npc', 10)
 
     assert_equal 2, @fight.characters.size
-    assert_equal Player, @fight.characters[0].class
+  end
+
+  def test_add_character_wont_duplicate_name
+    3.times { @fight.add_character('npc', 10) }
+    @fight.add_character('npc(1)', 10)
+
+    names = @fight.characters.map(&:name)
+
+    assert_equal 4, names.size
+    assert_equal names.uniq, names
   end
 
   def test_shovel
-    create_fight
     create_npc
 
     @fight << @npc
@@ -80,13 +129,38 @@ class FightTest < Minitest::Test
   end
 
   def test_shovel_chages_last_event
-    create_fight
     create_npc
 
     @fight << @npc
 
     assert_equal "npc created!", @fight.last_event
   end
+
+  def test_shovel_wont_duplicate_name
+    3.times { @fight << Npc.new('npc', 10) }
+    @fight << Npc.new('npc(1)', 10)
+
+    names = @fight.characters.map(&:name)
+
+    assert_equal 4, names.size
+    assert_equal names.uniq, names
+  end
+
+  def test_change_character_name_if_taken
+    create_fight
+    create_npc
+
+    @fight << @npc
+
+    @fight << Npc.new('npc', 10)
+
+    @fight.add_character('npc', 10)
+
+    assert_equal 'npc(2)', @fight.characters[1].name
+    assert_equal 'npc(3)', @fight.characters[2].name
+  end
+
+  # Duplicate Fight
 
   def test_duplicate_fight
     create_fight(2, 2)
@@ -101,7 +175,8 @@ class FightTest < Minitest::Test
       assert_equal character.name, new_character.name
       refute_same character, new_character
 
-      assert_equal character.instance_variables, new_character.instance_variables
+      assert_equal character.instance_variables,
+                   new_character.instance_variables
     end
   end
 
@@ -139,6 +214,8 @@ class FightTest < Minitest::Test
     assert_equal "fight(4)", fight4.name
   end
 
+  # Character Retreival
+
   def test_npcs
     create_fight
     create_characters(2, 2)
@@ -168,31 +245,6 @@ class FightTest < Minitest::Test
     assert_equal strongest, @fight.strongest_npc
   end
 
-  def test_start_fight
-    create_fight
-
-    @fight.start_fight
-
-    assert_equal Date.today, @fight.dates[1]
-    assert_equal "Fight Started!", @fight.status
-
-    assert_equal "Fight Started!", @fight.last_event
-  end
-
-  def test_change_character_name_if_taken
-    create_fight
-    create_npc
-
-    @fight << @npc
-
-    @fight << Npc.new('npc', 10)
-
-    @fight.add_character('npc', 10)
-
-    assert_equal 'npc(2)', @fight.characters[1].name
-    assert_equal 'npc(3)', @fight.characters[2].name
-  end
-
   def test_fetch_character
     create_fight(2)
 
@@ -201,5 +253,56 @@ class FightTest < Minitest::Test
 
     assert_equal 'npc_0', character1.name
     assert_equal 'npc_1', character2.name
+  end
+
+  def test_npc_count
+    assert_equal 0, @fight.npc_count
+
+    @fight.add_character('npc', 10)
+    assert_equal 1, @fight.npc_count
+
+    @fight.add_character('player', 10, :player)
+    assert_equal 1, @fight.npc_count
+
+    @fight.add_character('npc', 10)
+    assert_equal 2, @fight.npc_count
+  end
+
+  def test_player_count
+    assert_equal 0, @fight.player_count
+
+    @fight.add_character('player', 10, :player)
+    assert_equal 1, @fight.player_count
+
+    @fight.add_character('npc', 10)
+    assert_equal 1, @fight.player_count
+
+    @fight.add_character('player', 10, :player)
+    assert_equal 2, @fight.player_count
+  end
+
+  def test_npc_health_percentage
+    assert_equal 0, @fight.npc_health_percentage
+
+    @fight.add_character('npc', 10)
+    assert_equal 100.0, @fight.npc_health_percentage
+
+    @fight.add_character('player', 10, :player)
+    @fight.characters[1].full_damage
+    assert_equal 100.0, @fight.npc_health_percentage
+
+    @fight.add_character('npc', 10)
+    @fight.characters[2].full_damage
+    assert_equal 50.0, @fight.npc_health_percentage
+  end
+
+  def test_start_fight
+    create_fight
+
+    @fight.start_fight
+
+    assert_equal "Fight Started!", @fight.status
+
+    assert_equal "Fight Started!", @fight.last_event
   end
 end

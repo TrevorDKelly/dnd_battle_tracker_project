@@ -28,11 +28,9 @@ to do
   sinatra tests
   update tests
     sinatra
-    character
-    fight
-    all instance vars
-    all methods
   initiative
+  make character copy a deep copy
+  no npcs message replaces fight health bar
 
 character box
   condition

@@ -1,11 +1,9 @@
 require_relative 'character'
 require_relative 'name_iterator'
 
-require 'date'
-
 class Fight
   attr_accessor :name, :status, :notes, :last_event
-  attr_reader :characters, :dates
+  attr_reader :characters
 
   include NameIterator
 
@@ -13,14 +11,13 @@ class Fight
     @name = name
     @characters = []
     @status = 'Prepping'
-    @dates = [Date.today, nil, nil]
     @last_event = "Fight Created!"
   end
 
-  def add_character(name, hp = 1, npc = true)
+  def add_character(name, hp = 1, type = :npc)
     new_name = verify_name(name, @characters)
 
-    character = if npc
+    character = if type == :npc
                   Npc.new(new_name, hp)
                 else
                   Player.new(new_name, hp)
@@ -28,7 +25,6 @@ class Fight
 
     @characters << character
     @last_event = "#{character.name} created!"
-    @dates[2] = Date.today
   end
 
   def <<(character)
@@ -39,7 +35,6 @@ class Fight
     @characters << character
 
     @last_event = "#{character.name} created!"
-    @dates[2] = Date.today
   end
 
   def npc_count
@@ -56,7 +51,7 @@ class Fight
 
     @characters.each do |character|
       new_name = verify_name(character.name, fight.characters)
-      fight << character.copy(new_name, duplicate: true)
+      fight << character.copy(new_name)
     end
 
     fight.last_event = 'Fight Created!'
@@ -72,8 +67,6 @@ class Fight
   end
 
   def start_fight
-    @dates[1] = Date.today
-    @dates[2] = Date.today
     @status = "Fight Started!"
     @last_event = "Fight Started!"
   end
