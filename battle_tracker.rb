@@ -173,10 +173,7 @@ end
 post "/:fight_name/restart" do
   fetch_fight(params[:fight_name])
 
-  @fight.characters.each(&:full_heal)
-  @fight.status = 'Prepping'
-
-  @fight.last_event = "Fight restarted"
+  @fight.restart
   redirect "/#{slugify(@fight.name)}"
 end
 

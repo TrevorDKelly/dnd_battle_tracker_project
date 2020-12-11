@@ -296,13 +296,29 @@ class FightTest < Minitest::Test
     assert_equal 50.0, @fight.npc_health_percentage
   end
 
-  def test_start_fight
-    create_fight
-
-    @fight.start_fight
+  def test_start
+    @fight.start
 
     assert_equal "Fight Started!", @fight.status
 
     assert_equal "Fight Started!", @fight.last_event
+  end
+
+  def test_restart
+    create_fight(2)
+
+    @fight.start
+    @fight.characters[0].full_damage
+    @fight.characters[1].take_damage(5)
+    @fight.characters[1].add_condition('Prone')
+
+    @fight.restart
+
+    assert_equal 'Prepping', @fight.status
+    assert_equal 'Fight Restarted!', @fight.last_event
+    @fight.characters.each do |character|
+      assert_equal character.max_hp, character.hp
+      assert_empty character.conditions
+    end
   end
 end

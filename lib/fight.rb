@@ -66,11 +66,6 @@ class Fight
     npcs.max { |a, b| a.max_hp <=> b.max_hp }
   end
 
-  def start_fight
-    @status = "Fight Started!"
-    @last_event = "Fight Started!"
-  end
-
   def npc_health_percentage
     return 0 if npcs.empty?
     hp_left = 0
@@ -86,6 +81,20 @@ class Fight
 
   def fetch_character(name)
     @characters.select { |character| character.name == name }.first
+  end
+
+  def start
+    @status = "Fight Started!"
+    @last_event = "Fight Started!"
+  end
+
+  def restart
+    @characters.each do |character|
+      character.full_heal
+      character.remove_all_conditions
+    end
+    @status = "Prepping"
+    @last_event = "Fight Restarted!"
   end
 
   private
