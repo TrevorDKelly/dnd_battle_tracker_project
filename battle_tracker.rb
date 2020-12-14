@@ -75,11 +75,9 @@ def fetch_character(slug)
   @character = @fight.fetch_character(name)
 end
 
-def valid_fight_name_error(name)
+def valid_name_error(name)
   if name.match(/[^a-zA-Z0-9 \(\)]/)
-    "Fight name can only contain letters, numbers, parentheses, and spaces"
-  elsif fight_name_taken?(name)
-    "That name is already taken!"
+    "Name can only contain letters, numbers, parentheses, and spaces"
   elsif name.empty?
     "Name can't be empty!"
   end
@@ -88,6 +86,17 @@ end
 def fight_not_found
   session[:error] = "That fight could not be found"
   redirect "/"
+end
+
+def set_edit_character_prefills(character)
+  params[:name] = character.name
+  params[:hp] = character.hp
+  params[:ac] = character.ac
+  params[:initative_bonus] = character.initiative_bonus
+  params[:char_class] = character.char_class
+  params[:race] = character.race
+  params[:ability_scores] = character.ability_scores
+  params[:notes] = character.notes
 end
 
 # Paths
@@ -104,7 +113,7 @@ end
 post "/new_fight" do
   @name = params[:name].strip
 
-  error = valid_fight_name_error(@name)
+  error = valid_name_error(@name)
 
   if error
     session[:error] = error
@@ -156,7 +165,7 @@ post "/:fight_name/edit" do
 
   redirect "/#{slugify(@name)}" if @name == @fight.name
 
-  error = valid_fight_name_error(@name)
+  error = valid_name_error(@name)
 
   if error
     session[:error] = error
@@ -181,18 +190,62 @@ end
 get "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
 
-  erb :new_character
+  @title = "Creating New Character in #{@fight.name}"
+  @submit_button = "Submit New Character"
+  @post_location = "/#{slugify(@fight.name)}/new_character"
+  erb :character_creator
 end
 
 post "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
+  name = params[:name].strip
 
-  @name = params[:name]
-  @hp = params[:hp]
+  error = valid_name_error(name)
 
-  @fight.add_character(@name, @hp)
+  if error
+    session[:error] = error
+    @title = "Creating New Character in #{@fight.name}"
+    @submit_button = "Submit New Character"
+    @post_location = "/#{slugify(@fight.name)}/new_character"
 
-  redirect "/" + slugify(@fight.name)
+    erb :character_creator
+  else
+    @fight << Character.new(params)
+    session[:success] = "New Character Created!"
+    redirect "/" + slugify(@fight.name)
+  end
+end
+
+# Edit Character
+get "/:fight_name/:character_name/edit" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @title = "Editing #{@character.name}"
+  @submit_button = "Save Changes"
+  @post_location = "/#{slugify(@fight.name, @character.name)}/edit"
+  set_edit_character_prefills(@character)
+  erb :character_creator
+end
+
+post "/:fight_name/:character_name/edit" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  error = valid_name_error(params[:name])
+
+  if error
+    session[:error] = error
+    @title = "Editing #{@character.name}"
+    @submit_button = "Save Changes"
+    @post_location = "/#{slugify(@fight.name, @character.name)}/edit"
+
+    erb :character_creator
+  else
+    @character.update(params)
+    session[:success] = "Character was updated!"
+    redirect "/" + slugify(@fight.name)
+  end
 end
 
 # Take and Heal Damage

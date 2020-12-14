@@ -1,0 +1,83 @@
+<% content_for :top do %>
+  <div class='title'>
+    <h2><%= @title %></h3>
+  </div>
+<% end %>
+
+<div class="character-creator">
+  <form action="<%= @post_location %>" method="POST">
+    <div class='right'>
+      <button class="submit" type='submit'><%= @submit_button %></button>
+      <a href="/<%= @fight.name %>">
+        <button class="cancel" type='button'>Cancel</button>
+      </a>
+    </div>
+
+    <div class="required">
+      <h3>Required</h3>
+
+      <div>
+        <label for="name">Character Name</label>
+        <input type="text" id='name' name="name" value="<%= params[:name] %>" required>
+      </div>
+
+      <div>
+        <label for="hp">HP</label>
+        <input type="number" id='hp' name="hp" min="1" value="<%= params[:hp] %>" required>
+      </div>
+
+      <div class="player-type">
+        <input type="radio" id='npc' name='type' value='npc' checked>
+        <label for='npc'>NPC</label>
+        <input type="radio" id='player' name='type' value='player'>
+        <label for='player'>Player</label>
+      </div>
+    </div>
+
+    <div class="not-required">
+      <h3>Optional</h3>
+      <div>
+        <label for='ac'>Armor Class</label>
+        <input id='ac' type='number' name='ac' value="<%= params[:ac] %>">
+      </div>
+
+      <div>
+        <label for='initiative-bonus'>Initiative Bonus</label>
+        <input id='initiative-bonus' type='number' name='initiative_bonus' value="<%= params[:initiative_bonus] || 0 %>">
+      </div>
+
+      <div>
+        <label for='char-class'>Class</label>
+        <input id='char-class' type='text' name='char_class' value="<%= params[:char_class] %>">
+      </div>
+
+      <div>
+        <label for='race'>Race</label>
+        <input id='race' type='text' name='race' value="<%= params[:race] %>">
+      </div>
+    </div>
+
+    <div class="scores">
+      <h4>Ability Scores</h4>
+      <% [:strength, :dexterity, :constitution, :Intelligence, :wisdom, :charisma].each do |score| %>
+        <div class='ability-score'>
+          <label for='<%= score %>'><%= score.capitalize %></label>
+          <input id='<%= score %>' type='number' name='<%= score %>'
+                 value="<%= @ability_scores ? @ability_scores[score] : params[score] %>">
+        </div>
+      <% end %>
+    </div>
+
+    <div class='enter-notes'>
+      <label for='notes'>Notes</label>
+      <textarea id='notes' name='notes' rows='10' cols='40'><%= params[:notes] %></textarea>
+    </div>
+
+    <div class='right'>
+      <button class="submit" type='submit'><%= @submit_button %></button>
+      <a href="/<%= @fight.name %>">
+        <button class="cancel">Cancel</button>
+      </a>
+    </div>
+  </form>
+</div>

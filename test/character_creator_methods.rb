@@ -1,20 +1,25 @@
 module CharacterCreatorMethods
   def create_player(number = 1)
+    params = {name: 'player', hp: 10, type: 'player'}
+
     if number == 1
-      @player = Player.new('player', 10)
+      @player = Character.new(params)
     else
       number.times do |n|
-        instance_variable_set("@player_#{n}", Player.new("player_#{n}", 10))
+        params[:name] = "player_#{n}"
+        instance_variable_set("@player_#{n}", Character.new(params))
       end
     end
   end
 
   def create_npc(number = 1)
+    params = {name: 'npc', hp: 10, type: 'npc'}
     if number == 1
-      @npc = Npc.new('npc', 10)
+      @npc = Character.new(params)
     else
       number.times do |n|
-        instance_variable_set("@npc_#{n}", Npc.new("npc_#{n}", 10))
+        params[:name] = "npc_#{n}"
+        instance_variable_set("@npc_#{n}", Character.new(params))
       end
     end
   end

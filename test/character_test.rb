@@ -18,14 +18,16 @@ class CharacterTest < Minitest::Test
 
   # Tests
   def test_create_npc
-    npc = Npc.new('npc', 10)
+    params = {name: 'npc', hp: 10, type: 'npc'}
+    npc = Character.new(params)
 
     assert_equal 'npc', npc.name
     assert_equal 10, npc.hp
   end
 
   def test_create_player
-    player = Player.new('player', 10)
+    params = {name: 'player', hp: 10, type: 'player' }
+    player = Character.new(params)
 
     assert_equal 'player', player.name
     assert_equal 10, player.hp
@@ -34,10 +36,43 @@ class CharacterTest < Minitest::Test
 
   def test_new_character_starting_stats
     assert_equal [], @npc.conditions
-    assert_equal 0, @npc.initiative
+    assert_equal 0, @npc.initiative_bonus
     assert_equal Integer, @npc.hp.class
     assert @npc.max_hp == @npc.hp
     assert_equal "Character Created!", @npc.last_event
+  end
+
+  def test_create_character_with_full_params
+    params = { name: 'npc', hp: 10, ac: 15, char_class: "bard", race: 'elf',
+               notes: 'the notes', initiative_bonus: 3, size: "medium",
+               strength: 10, dexterity: 10, constitution: 10,
+               intelligence: 10, wisdom: 10, charisma: 10, type: 'npc' }
+
+    npc = Character.new(params)
+
+    assert_equal 'npc', npc.name
+    assert_equal 10, npc.hp
+    assert_equal 10, npc.max_hp
+    assert_equal 'bard', npc.char_class
+    assert_equal 'elf', npc.race
+    assert_equal 'the notes', npc.notes
+    assert_equal 'medium', npc.size
+    assert_equal 3, npc.initiative_bonus
+    assert_equal 'npc', npc.type
+
+    scores = [:strength, :dexterity, :constitution, :intelligence,
+              :wisdom, :charisma]
+
+    scores.each do |score|
+      assert_equal 10, npc.ability_scores[score]
+    end
+  end
+
+  def test_update
+    @npc.update({ name: 'npc', hp: 10, race: 'elf' })
+
+    assert_equal 'elf', @npc.race
+    assert_equal 'Character Updated', @npc.last_event
   end
 
   # Class Methods
@@ -58,6 +93,22 @@ class CharacterTest < Minitest::Test
     @npc.name = 'name'
 
     assert_equal 'name', @npc.name
+  end
+
+  def test_type
+    assert_equal 'npc', @npc.type
+
+    @npc.type = 'player'
+
+    assert_equal 'player', @npc.type
+  end
+
+  def test_ac
+    assert_nil @npc.ac
+
+    @npc.ac = 15
+
+    assert_equal 15, @npc.ac
   end
 
   def test_char_class
@@ -98,6 +149,22 @@ class CharacterTest < Minitest::Test
     @npc.last_event = 'last_event'
 
     assert_equal 'last_event', @npc.last_event
+  end
+
+  def test_initiative
+    assert_nil @npc.initiative
+
+    @npc.initiative = 15
+
+    assert_equal 15, @npc.initiative
+  end
+
+  def test_initiative_bonus
+    assert_equal 0, @npc.initiative_bonus
+
+    @npc.initiative_bonus = 5
+
+    assert_equal 5, @npc.initiative_bonus
   end
 
   # Special Instance Variables setting, changing and access
@@ -185,6 +252,11 @@ class CharacterTest < Minitest::Test
     @npc.remove_all_conditions
 
     assert_equal "Returned to normal condition", @npc.last_event
+  end
+
+  def test_ability_scores
+    assert_instance_of Hash, @npc.ability_scores
+    assert_raises(NoMethodError) { @npc.ability_scores = "this" }
   end
 
   # Instance Methods

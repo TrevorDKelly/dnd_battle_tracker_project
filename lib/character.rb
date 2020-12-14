@@ -1,26 +1,29 @@
 require_relative 'name_iterator'
 
 class Character
-  attr_reader :hp, :max_hp, :conditions
-  attr_accessor :name, :char_class, :size, :race, :notes,
-                :last_event, :initiative
+  attr_reader :hp, :max_hp, :conditions, :ability_scores
+  attr_accessor :name, :char_class, :size, :race, :notes, :last_event,
+                :initiative, :initiative_bonus, :ac, :type
 
   CONDITIONS = %w(Prone Poisoned Flanked Blinded Restrained Grappled
                   Incapacitated Unconscious)
 
   include NameIterator
 
-  def initialize(name, hp)
-    @name = name
-    @hp = hp.to_i
-    @max_hp = @hp
+  def initialize(params)
+    set_character_stats(params)
+    @hp = @max_hp
     @conditions = []
-    @initiative = 0
     @last_event = "Character Created!"
   end
 
   def self.conditions
     CONDITIONS
+  end
+
+  def update(params)
+    set_character_stats(params)
+    @last_event = "Character Updated"
   end
 
   def max_hp=(new)
@@ -31,11 +34,11 @@ class Character
   end
 
   def is_player?
-    self.class == Player
+    type == 'player'
   end
 
   def is_npc?
-    self.class == Npc
+    type == 'npc'
   end
 
   def take_damage(amount)
@@ -96,12 +99,29 @@ class Character
     remove_all_conditions
     @last_event = 'Has been reset'
   end
-end
 
-class Player < Character
+  private
 
-end
+  def set_character_stats(params)
+    @name = params[:name]
+    self.max_hp = params[:hp].to_i
+    @ac = params[:ac]
+    @initiative_bonus = params[:initiative_bonus] || 0
+    @char_class = params[:char_class]
+    @size = params[:size]
+    @race = params[:race]
+    @notes = params[:notes]
+    @type = params[:type]
+    set_ability_scores(params)
+  end
 
-class Npc < Character
+  def set_ability_scores(params)
+    @ability_scores = {}
+    scores = [:strength, :dexterity, :constitution, :intelligence,
+              :wisdom, :charisma]
 
+    scores.each do |score|
+      @ability_scores[score] = params[score]
+    end
+  end
 end

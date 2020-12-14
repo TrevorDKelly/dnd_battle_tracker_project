@@ -14,19 +14,6 @@ class Fight
     @last_event = "Fight Created!"
   end
 
-  def add_character(name, hp = 1, type = :npc)
-    new_name = verify_name(name, @characters)
-
-    character = if type == :npc
-                  Npc.new(new_name, hp)
-                else
-                  Player.new(new_name, hp)
-                end
-
-    @characters << character
-    @last_event = "#{character.name} created!"
-  end
-
   def <<(character)
     if @characters.map(&:name).include? character.name
       character = character.copy(verify_name(character.name, @characters))

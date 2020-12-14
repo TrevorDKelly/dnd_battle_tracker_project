@@ -40,9 +40,21 @@ character box
       open drop down
         jquery
         radio boxes
-  edit
-    goes to edit page
 
-edit character
-  go to character create page and pre fill everything
 
+update character layout to include new info
+add basic scores
+  score
+  bonus
+?add other skills
+
+update tests
+  fight
+    adding chars
+update character layout with new info
+  display of info
+  changing stats
+radio char type default to char type or npc
+make sure numbers are to_i
+type can only be player or npc
+edited character name verification
