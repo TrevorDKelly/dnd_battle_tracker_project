@@ -100,7 +100,6 @@ class FightTest < Minitest::Test
   end
 
   def test_shovel_wont_duplicate_name
-    skip
     3.times do
       @fight << Character.new({ name: "npc", hp: 10, type: 'npc' })
     end
@@ -113,7 +112,6 @@ class FightTest < Minitest::Test
   end
 
   def test_change_character_name_if_taken
-    skip
     create_fight
     create_npc
 
@@ -121,7 +119,7 @@ class FightTest < Minitest::Test
 
     @fight << Character.new({ name: "npc", hp: 10, type: 'npc' })
 
-    @fight.add_character('npc', 10)
+    @fight << Character.new({ name: "npc", hp: 10, type: 'npc' })
 
     assert_equal 'npc(2)', @fight.characters[1].name
     assert_equal 'npc(3)', @fight.characters[2].name
@@ -130,7 +128,6 @@ class FightTest < Minitest::Test
   # Duplicate Fight
 
   def test_duplicate_fight
-    skip
     create_fight(2, 2)
 
     new_fight = @fight.duplicate([@fight])
@@ -149,7 +146,6 @@ class FightTest < Minitest::Test
   end
 
   def test_duplicate_fight_hp_reset
-    skip
     create_fight(2, 2)
 
     @fight.characters.each { |character| character.take_damage(5) }
@@ -162,7 +158,6 @@ class FightTest < Minitest::Test
   end
 
   def test_duplicate_returns_fight_object
-    skip
     create_fight(2, 2)
 
     new_fight = @fight.duplicate([@fight])
@@ -171,7 +166,6 @@ class FightTest < Minitest::Test
   end
 
   def test_duplicating_fight_does_not_reuse_name
-    skip
     create_fight(2, 2)
 
     fight2 = @fight.duplicate([@fight])

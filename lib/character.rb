@@ -85,13 +85,18 @@ class Character
   end
 
   def copy(name)
-    npc = self.class == Npc
+    character = Character.new({})
+    instance_variables.each do |i_var|
+      value = instance_variable_get(i_var)
 
-    if npc
-      Npc.new(name, @max_hp)
-    else
-      Player.new(name, @max_hp)
+      character.instance_variable_set(i_var, value)
     end
+
+    character.name = name
+    character.reset
+    character.last_event = "Character Created!"
+
+    character
   end
 
   def reset

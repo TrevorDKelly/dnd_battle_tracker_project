@@ -352,4 +352,55 @@ class CharacterTest < Minitest::Test
 
     assert_equal "Has been reset", @npc.last_event
   end
+
+  def test_copy
+    new_character = @npc.copy('new')
+
+    assert_equal 'new', new_character.name
+    assert_equal 'npc', @npc.name
+    assert_equal 10, new_character.max_hp
+  end
+
+  def test_copy_resets_new_character
+    @npc.take_damage(5)
+    @npc.add_condition('Prone')
+
+    new_character = @npc.copy('new')
+
+    assert_equal 10, new_character.hp
+    assert_equal 5, @npc.hp
+    assert_empty new_character.conditions
+    assert_equal ['Prone'], @npc.conditions
+  end
+
+  def test_copy_character_with_full_params
+    params = { name: 'npc', hp: 10, ac: 15, char_class: "bard", race: 'elf',
+               notes: 'the notes', initiative_bonus: 3, size: "medium",
+               strength: 10, dexterity: 10, constitution: 10,
+               intelligence: 10, wisdom: 10, charisma: 10, type: 'npc' }
+
+    npc = Character.new(params)
+    new_character = npc.copy('new')
+
+    assert_equal 'npc', npc.name
+    assert_equal 'new', new_character.name
+
+    [npc, new_character].each do |character|
+      assert_equal 10, character.hp
+      assert_equal 10, character.max_hp
+      assert_equal 'bard', character.char_class
+      assert_equal 'elf', character.race
+      assert_equal 'the notes', character.notes
+      assert_equal 'medium', character.size
+      assert_equal 3, character.initiative_bonus
+      assert_equal 'npc', character.type
+
+      scores = [:strength, :dexterity, :constitution, :intelligence,
+                :wisdom, :charisma]
+
+      scores.each do |score|
+        assert_equal 10, character.ability_scores[score]
+      end
+    end
+  end
 end
