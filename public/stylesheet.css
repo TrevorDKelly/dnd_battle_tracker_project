@@ -243,6 +243,20 @@ button.cancel {
   width: 9em;
 }
 
+.current-conditions button {
+  width: 19px;
+  height: 19px;
+  border: 2px solid black;
+  border-left: none;
+  padding: 1px;
+  background: #8f0000;
+}
+
+.add-condition button {
+  width: 120px;
+  background: #003894;
+}
+
 /* Flash Messages */
 
 .flash-box {
@@ -402,7 +416,7 @@ button.cancel {
 /* Character Box*/
 
 .list-box.character {
-  background: #e0c9c1;
+  background: #cccccc;
   min-height: 2em;
   padding: 0;
   margin-bottom: 0.5em;
@@ -416,7 +430,9 @@ button.cancel {
 
 .character-basics {
   display: inline-block;
-  margin: 0 0.3em;
+  margin: 0 0 0.3em 0.3em;
+  width: 95%;
+  background: #aaaaaa;
 }
 
 .character-info {
@@ -446,7 +462,8 @@ button.cancel {
 
 .character-interactive div {
   display: inline-block;
-  margin: 0 1em;
+  margin: 0 0 0 1em;
+  vertical-align: top;
 }
 
 .character-interactive input {
@@ -456,13 +473,28 @@ button.cancel {
   height: 15px;
 }
 
-.change-hp {
-  width: 45%;
+.ac {
+  border: 2px solid black;
+  border-radius: 1em;
+  text-align: center;
+  width: 50px;
+  height:40px;
+}
+
+.ac h5 {
+  margin: auto;
+  border-bottom: 2px solid black;
+  border-radius: 1em 1em 0 0;
+  background: #aaaaaa;
+}
+
+.ac p {
   margin: auto;
 }
 
 .change-hp div {
   margin: auto;
+  display: block;
 }
 
 .change-hp form {
@@ -471,6 +503,30 @@ button.cancel {
 
 .change-hp input {
   width: 40px;
+}
+
+.character-condition {
+  width: 45%;
+}
+
+.current-conditions {
+  display: block;
+  vertical-align: top;
+}
+
+.current-conditions p {
+  display: inline-block;
+  font: normal 14px sans-serif;
+  border: 2px solid black;
+  border-radius: 1em 0 0 1em;
+  border-right: none;
+  padding: 0 0.5em 0 0.5em;
+  height: 15px;
+  margin:auto;
+}
+
+.add-condition input {
+  width: 100px;
 }
 
 /* New / Edit Character */

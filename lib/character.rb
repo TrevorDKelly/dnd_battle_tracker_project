@@ -5,8 +5,7 @@ class Character
   attr_accessor :name, :char_class, :size, :race, :notes, :last_event,
                 :initiative, :initiative_bonus, :ac, :type
 
-  CONDITIONS = %w(Prone Poisoned Flanked Blinded Restrained Grappled
-                  Incapacitated Unconscious)
+  CONDITIONS = %w(Blinded Charmed Deafened Frightened Grappled Incapacitated Invisible Paralyzed Petrified Poisoned Prone Restrained Stunned Unconscious)
 
   include NameIterator
 
@@ -110,8 +109,8 @@ class Character
   def set_character_stats(params)
     @name = params[:name]
     self.max_hp = params[:hp].to_i
-    @ac = params[:ac]
-    @initiative_bonus = params[:initiative_bonus] || 0
+    @ac = params[:ac].to_i
+    @initiative_bonus = params[:initiative_bonus].to_i || 0
     @char_class = params[:char_class]
     @size = params[:size]
     @race = params[:race]

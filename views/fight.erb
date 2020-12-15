@@ -44,7 +44,7 @@
       </div>
 
       <div class="character-basics">
-        <% each_available_stat(character) do |name, value| %>
+        <% each_basic_stat(character) do |name, value| %>
           <div class='character-info'>
             <p>
               <span class="character-info stat"><%= name %>:</span>
@@ -55,6 +55,10 @@
       </div>
 
       <div class="character-interactive">
+        <div class='ac'>
+          <h5>AC</h5>
+          <p><%= character.ac %></p>
+        </div>
         <div class="change-hp">
           <div>
             <form action="/<%= slugify(@fight.name, character.name) %>/take_damage/" method="POST">
@@ -77,12 +81,25 @@
           </div>
         </div>
 
-        <div class="change-condition">
-          <form action="/<%= slugify(@fight.name, character.name) %>/change-condition" method="POST">
-            <input type="text">
-            <button type='submit'>Change Condition</button>
-          </form>
+        <div class="character-condition">
+          <div class="current-conditions">
+            <% character.conditions.each do |condition| %>
+              <p><%= condition %></p><a href="/<%= slugify(@fight.name, character.name) %>/remove_condition/<%= condition %>"><button class="remove-condition">X</button></a>
+            <% end %>
+          </div>
+
+          <div class="add-condition">
+            <form action="/<%= slugify(@fight.name, character.name) %>/add_condition" method="POST">
+              <input list="condition" id="add-condition" name="condition"><button type='submit'>Add Condition</button>
+              <datalist id='condition'>
+                <% @all_conditions.each do |condition| %>
+                  <option value="<%= condition %>">
+                <% end %>
+              </datalist>
+            </form>
+          </div>
         </div>
+
       </div>
     </div>
 

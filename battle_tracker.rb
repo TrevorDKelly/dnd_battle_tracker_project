@@ -33,18 +33,18 @@ helpers do
     "width:#{percent}%; background:#{color};"
   end
 
-  def each_available_stat(character)
-    stats = [:initiative, :char_class, :race, :size]
-    type = character.is_npc? ? 'NPC' : 'Player'
+  def each_basic_stat(character)
+    stats = [:type, :initiative_bonus, :race, :size]
 
-    yield('Type', type)
 
     stats.each do |stat|
       name = stat.to_s.gsub('_', ' ').capitalize
       value = character.public_send(stat)
 
-      yield(name, value) if value
+      yield(name, value) unless value.empty?
     end
+
+    yield('Class', character.char_class) unless character.char_class.empty?
   end
 end
 
@@ -75,11 +75,13 @@ def fetch_character(slug)
   @character = @fight.fetch_character(name)
 end
 
-def valid_name_error(name)
+def valid_name_error(name, collection)
   if name.match(/[^a-zA-Z0-9 \(\)]/)
     "Name can only contain letters, numbers, parentheses, and spaces"
   elsif name.empty?
     "Name can't be empty!"
+  elsif collection.include?(name)
+    "That name is already taken!"
   end
 end
 
@@ -97,6 +99,7 @@ def set_edit_character_prefills(character)
   params[:race] = character.race
   params[:ability_scores] = character.ability_scores
   params[:notes] = character.notes
+  params[:type] = character.type
 end
 
 # Paths
@@ -113,7 +116,8 @@ end
 post "/new_fight" do
   @name = params[:name].strip
 
-  error = valid_name_error(@name)
+  existing_names = session[:fights].map(&:name)
+  error = valid_name_error(@name, existing_name)
 
   if error
     session[:error] = error
@@ -127,6 +131,7 @@ end
 # Fight Page
 get "/:fight_name" do
   fetch_fight(params[:fight_name])
+  @all_conditions = Character.conditions
 
   erb :fight
 end
@@ -165,7 +170,9 @@ post "/:fight_name/edit" do
 
   redirect "/#{slugify(@name)}" if @name == @fight.name
 
-  error = valid_name_error(@name)
+  existing_names = session[:fights].map(&:name)
+  existing_names.delete(@fight.name)
+  error = valid_name_error(@name, existing_names)
 
   if error
     session[:error] = error
@@ -200,7 +207,8 @@ post "/:fight_name/new_character" do
   fetch_fight(params[:fight_name])
   name = params[:name].strip
 
-  error = valid_name_error(name)
+  existing_names = @fight.characters.map(&:name)
+  error = valid_name_error(name, existing_names)
 
   if error
     session[:error] = error
@@ -232,7 +240,9 @@ post "/:fight_name/:character_name/edit" do
   fetch_fight(params[:fight_name])
   fetch_character(params[:character_name])
 
-  error = valid_name_error(params[:name])
+  existing_names = @fight.characters.map(&:name)
+  existing_names.delete(@character.name)
+  error = valid_name_error(params[:name], existing_names)
 
   if error
     session[:error] = error
@@ -246,6 +256,28 @@ post "/:fight_name/:character_name/edit" do
     session[:success] = "Character was updated!"
     redirect "/" + slugify(@fight.name)
   end
+end
+
+# Delete Character
+post "/:fight_name/:character_name/delete" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @fight.last_event = "#{@character.name} removed"
+  @fight.characters.delete(@character)
+
+  redirect "/#{slugify(@fight.name)}"
+end
+
+#Duplicate Character
+post "/:fight_name/:character_name/duplicate" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @fight.last_event = "#{@character.name} duplicated"
+  @fight << @character
+
+  redirect "/#{slugify(@fight.name)}"
 end
 
 # Take and Heal Damage
@@ -282,24 +314,21 @@ post "/:fight_name/:character_name/heal_damage/*" do
   redirect "/#{slugify(@fight.name)}"
 end
 
-# Delete Character
-post "/:fight_name/:character_name/delete" do
+# Add and Remove Conditions
+post "/:fight_name/:character_name/add_condition" do
   fetch_fight(params[:fight_name])
   fetch_character(params[:character_name])
 
-  @fight.last_event = "#{@character.name} removed"
-  @fight.characters.delete(@character)
+  @character.add_condition(params[:condition])
 
   redirect "/#{slugify(@fight.name)}"
 end
 
-#Duplicate Character
-post "/:fight_name/:character_name/duplicate" do
+get "/:fight_name/:character_name/remove_condition/:condition" do
   fetch_fight(params[:fight_name])
   fetch_character(params[:character_name])
 
-  @fight.last_event = "#{@character.name} duplicated"
-  @fight << @character
+  @character.remove_condition(params[:condition])
 
   redirect "/#{slugify(@fight.name)}"
 end
