@@ -109,8 +109,8 @@ class Character
   def set_character_stats(params)
     @name = params[:name]
     self.max_hp = params[:hp].to_i
-    @ac = params[:ac].to_i
-    @initiative_bonus = params[:initiative_bonus].to_i || 0
+    @ac = params[:ac]
+    @initiative_bonus = params[:initiative_bonus]
     @char_class = params[:char_class]
     @size = params[:size]
     @race = params[:race]

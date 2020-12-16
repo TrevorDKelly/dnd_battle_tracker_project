@@ -81,8 +81,14 @@
           </div>
         </div>
 
+        <div class="last-event">
+          <h5>Character's Last Event</h5>
+          <p><%= character.last_event %></p>
+        </div>
+
         <div class="character-condition">
           <div class="current-conditions">
+            <h5>Conditions:</h5>
             <% character.conditions.each do |condition| %>
               <p><%= condition %></p><a href="/<%= slugify(@fight.name, character.name) %>/remove_condition/<%= condition %>"><button class="remove-condition">X</button></a>
             <% end %>
@@ -98,6 +104,16 @@
               </datalist>
             </form>
           </div>
+        </div>
+
+        <div class="ability-scores">
+          <% each_ability_score(character) do |name, value, bonus| %>
+            <div class="score-box">
+              <h5><%= name.capitalize %></h5>
+              <p><%= bonus %></p>
+              <p class="score-box value"><%= value %></p>
+            </div>
+          <% end %>
         </div>
 
       </div>

@@ -46,6 +46,17 @@ helpers do
 
     yield('Class', character.char_class) unless character.char_class.empty?
   end
+
+  def each_ability_score(character)
+    character.ability_scores.each do |name, value|
+      unless value.empty?
+        bonus = ((value.to_i - 10) / 2).floor
+        bonus = bonus.negative? ? bonus.to_i : "+#{bonus}"
+
+        yield(name, value, bonus)
+      end
+    end
+  end
 end
 
 def health_color(percent)
@@ -92,7 +103,7 @@ end
 
 def set_edit_character_prefills(character)
   params[:name] = character.name
-  params[:hp] = character.hp
+  params[:hp] = character.max_hp
   params[:ac] = character.ac
   params[:initative_bonus] = character.initiative_bonus
   params[:char_class] = character.char_class
@@ -117,7 +128,7 @@ post "/new_fight" do
   @name = params[:name].strip
 
   existing_names = session[:fights].map(&:name)
-  error = valid_name_error(@name, existing_name)
+  error = valid_name_error(@name, existing_names)
 
   if error
     session[:error] = error

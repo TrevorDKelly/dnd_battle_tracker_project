@@ -64,7 +64,7 @@
 
     <div class="scores">
       <h4>Ability Scores</h4>
-      <% [:strength, :dexterity, :constitution, :Intelligence, :wisdom, :charisma].each do |score| %>
+      <% [:strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma].each do |score| %>
         <div class='ability-score'>
           <label for='<%= score %>'><%= score.capitalize %></label>
           <input id='<%= score %>' type='number' name='<%= score %>'

@@ -462,7 +462,7 @@ button.cancel {
 
 .character-interactive div {
   display: inline-block;
-  margin: 0 0 0 1em;
+  margin: 0 0 0.2em 1em;
   vertical-align: top;
 }
 
@@ -505,13 +505,33 @@ button.cancel {
   width: 40px;
 }
 
+.last-event {
+  text-align: center;
+}
+
+.last-event h5 {
+  margin:auto;
+  border-bottom: 1px solid black;
+}
+
+.last-event p {
+  margin:auto;
+  font-size: 14px;
+}
+
 .character-condition {
-  width: 45%;
+  display: block !important;
+}
+
+.current-conditions h5 {
+  margin:auto;
+  display: inline-block;
 }
 
 .current-conditions {
   display: block;
   vertical-align: top;
+  margin-left: 0;
 }
 
 .current-conditions p {
@@ -527,6 +547,42 @@ button.cancel {
 
 .add-condition input {
   width: 100px;
+}
+
+.ability-scores {
+  display: block !important;
+}
+
+.score-box {
+  border: 2px solid black;
+  border-radius: 1em;
+  text-align: center;
+  width:65px;
+  height: 50px;
+  vertical-align: bottom !important;
+}
+
+.score-box h5 {
+  border-bottom: 2px solid black;
+  border-radius: 2em 2em 0 0;
+  background: #aaaaaa;
+  margin: 0;
+  font-size: 10px;
+  width: 100%;
+  padding-top: 0.3em;
+}
+
+.score-box p {
+  margin: auto;
+  font-size: 15px;
+}
+
+.score-box.value {
+  margin: auto;
+  font-size: 12px;
+  height: auto;
+  width: 50%;
+  border-radius: 1em 1em 0 0;
 }
 
 /* New / Edit Character */
