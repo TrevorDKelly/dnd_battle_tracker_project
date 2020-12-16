@@ -45,6 +45,7 @@ helpers do
     end
 
     yield('Class', character.char_class) unless character.char_class.empty?
+    yield('Last Event', character.last_event)
   end
 
   def each_ability_score(character)
@@ -52,7 +53,7 @@ helpers do
       unless value.empty?
         bonus = ((value.to_i - 10) / 2).floor
         bonus = bonus.negative? ? bonus.to_i : "+#{bonus}"
-
+        name = name[0..2].upcase
         yield(name, value, bonus)
       end
     end

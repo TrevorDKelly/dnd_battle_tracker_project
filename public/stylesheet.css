@@ -178,7 +178,9 @@ button.edit {
 
 .right-buttons {
   display:inline-block;
-  width:10%;
+  width:9%;
+  float:right;
+  margin: 5px 5px 0 0;
 }
 
 .right-buttons form {
@@ -196,7 +198,7 @@ button.edit {
   font-weight: bold;
   color: white;
   cursor: pointer;
-  width: 105px;
+  width: 70px;
 }
 
 button.damage {
@@ -209,6 +211,7 @@ button.heal {
 
 button.full {
   border-radius: 1em;
+  width: 50px;
 }
 
 .character-creator a {
@@ -425,7 +428,7 @@ button.cancel {
 .character-overview {
   display: inline-block;
   vertical-align: top;
-  width: 85%;
+  width: 90%;
 }
 
 .character-basics {
@@ -437,7 +440,7 @@ button.cancel {
 
 .character-info {
   display: inline-block;
-  margin: 0 1em;
+  margin: 0 0.3em;
   vertical-align: top;
 }
 
@@ -462,7 +465,6 @@ button.cancel {
 
 .character-interactive div {
   display: inline-block;
-  margin: 0 0 0.2em 1em;
   vertical-align: top;
 }
 
@@ -473,11 +475,15 @@ button.cancel {
   height: 15px;
 }
 
+.hp {
+  margin-left: 0.3em;
+}
+
 .ac {
   border: 2px solid black;
   border-radius: 1em;
   text-align: center;
-  width: 50px;
+  width: 45px;
   height:40px;
 }
 
@@ -507,22 +513,8 @@ button.cancel {
   width: 40px;
 }
 
-.last-event {
-  text-align: center;
-}
-
-.last-event h5 {
-  margin:auto;
-  border-bottom: 1px solid black;
-}
-
-.last-event p {
-  margin:auto;
-  font-size: 14px;
-}
-
 .character-condition {
-  display: block !important;
+  margin: 0.3em;
 }
 
 .current-conditions h5 {
@@ -551,17 +543,12 @@ button.cancel {
   width: 100px;
 }
 
-.ability-scores {
-  display: block !important;
-}
-
 .score-box {
   border: 2px solid black;
   border-radius: 1em;
   text-align: center;
-  width:65px;
-  height: 50px;
-  vertical-align: bottom !important;
+  width: 55px;
+  height: 35px;
   background: white;
 }
 
@@ -591,6 +578,7 @@ button.cancel {
 
 .character-notes {
   display: block !important;
+  margin: 0.3em;
 }
 
 .character-notes h5 {
