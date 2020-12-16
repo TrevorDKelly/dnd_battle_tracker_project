@@ -108,7 +108,7 @@ def set_edit_character_prefills(character)
   params[:initative_bonus] = character.initiative_bonus
   params[:char_class] = character.char_class
   params[:race] = character.race
-  params[:ability_scores] = character.ability_scores
+  @ability_scores = character.ability_scores
   params[:notes] = character.notes
   params[:type] = character.type
 end

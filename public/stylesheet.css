@@ -490,6 +490,8 @@ button.cancel {
 
 .ac p {
   margin: auto;
+  background: white;
+  border-radius: 0 0 0.8em 0.8em;
 }
 
 .change-hp div {
@@ -560,12 +562,13 @@ button.cancel {
   width:65px;
   height: 50px;
   vertical-align: bottom !important;
+  background: white;
 }
 
 .score-box h5 {
   border-bottom: 2px solid black;
   border-radius: 2em 2em 0 0;
-  background: #aaaaaa;
+  background: #eeeeee;
   margin: 0;
   font-size: 10px;
   width: 100%;
@@ -583,6 +586,29 @@ button.cancel {
   height: auto;
   width: 50%;
   border-radius: 1em 1em 0 0;
+  background: #eeeeee;
+}
+
+.character-notes {
+  display: block !important;
+}
+
+.character-notes h5 {
+  margin:auto;
+  display:inline-block;
+  vertical-align: top;
+  padding-top: 0.5em;
+}
+
+.character-notes p {
+  margin:auto;
+  display:inline-block;
+  white-space: pre-wrap;
+  border-radius: 1em;
+  background: #eeeeee;
+  width: 75%;
+  padding: 0.5em;
+  font-size: 14px;
 }
 
 /* New / Edit Character */
