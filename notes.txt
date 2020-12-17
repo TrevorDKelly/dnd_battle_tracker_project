@@ -1,8 +1,6 @@
 fight page
-  status with title
-  events
+  last events
   fight notes
-  Edit - in fight
   roll initiative
   list chracters reoder w/ initiative
 
@@ -18,21 +16,6 @@ to do
     sinatra
   initiative
   no npcs message replaces fight health bar
-
-update character layout to include new info
-add basic scores
-  score
-  bonus
-?add other skills
-
-update tests
-  fight
-    adding chars
-update character layout with new info
-  display of info
-  changing stats
-make sure numbers are to_i
-type can only be player or npc
-
-Update layout of character
+  ge trid of fight status
+  add generic characters
 

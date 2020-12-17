@@ -5,13 +5,16 @@ class Character
   attr_accessor :name, :char_class, :size, :race, :notes, :last_event,
                 :initiative, :initiative_bonus, :ac, :type
 
-  CONDITIONS = %w(Blinded Charmed Deafened Frightened Grappled Incapacitated Invisible Paralyzed Petrified Poisoned Prone Restrained Stunned Unconscious)
+  CONDITIONS = %w(Blinded Charmed Deafened Frightened Grappled Incapacitated
+                  Invisible Paralyzed Petrified Poisoned Prone Restrained
+                  Stunned Unconscious)
 
   include NameIterator
 
   def initialize(params)
-    set_character_stats(params)
+    @max_hp = params[:hp]
     @hp = @max_hp
+    set_character_stats(params)
     @conditions = []
     @last_event = "Character Created!"
   end

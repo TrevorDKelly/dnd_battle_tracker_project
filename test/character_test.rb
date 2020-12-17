@@ -36,7 +36,6 @@ class CharacterTest < Minitest::Test
 
   def test_new_character_starting_stats
     assert_equal [], @npc.conditions
-    assert_equal 0, @npc.initiative_bonus
     assert_equal Integer, @npc.hp.class
     assert @npc.max_hp == @npc.hp
     assert_equal "Character Created!", @npc.last_event
@@ -160,7 +159,7 @@ class CharacterTest < Minitest::Test
   end
 
   def test_initiative_bonus
-    assert_equal 0, @npc.initiative_bonus
+    assert_nil @npc.initiative_bonus
 
     @npc.initiative_bonus = 5
 

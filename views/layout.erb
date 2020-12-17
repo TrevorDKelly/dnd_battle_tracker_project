@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>Battle Tracker</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Texturina:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link rel='preconnect' href='https://fonts.gstatic.com'>
+    <link href='https://fonts.googleapis.com/css2?family=Texturina:ital,wght@1,900&display=swap' rel='stylesheet'>
     <link rel='stylesheet' href='/stylesheet.css'>
   </head>
 
@@ -13,23 +13,25 @@
     </header>
 
     <main>
-      <div class="top">
+      <div class='top'>
         <%== yield_content :top%>
       </div>
 
-      <div class="flash-box">
-        <% if session[:error] %>
-          <div class="flash error">
+      <% if session[:error] %>
+        <div class='flash-box'>
+          <div class='flash error'>
             <p><%= session.delete(:error) %></p>
           </div>
-        <% end %>
+        </div>
+      <% end %>
 
-        <% if session[:success] %>
-          <div class="flash success">
+      <% if session[:success] %>
+        <div class='flash-box'>
+          <div class='flash success'>
             <p><%= session.delete(:success) %></p>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
 
       <%== yield %>
     </main>
