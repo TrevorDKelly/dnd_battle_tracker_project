@@ -2,16 +2,22 @@ require_relative 'character'
 require_relative 'name_iterator'
 
 class Fight
-  attr_accessor :name, :status, :notes, :last_event
+  attr_accessor :name, :notes, :last_event, :sort_order
   attr_reader :characters
 
   include NameIterator
 
+  SORT_OPTIONS = ['Alphabetical', 'Max HP', 'Remaining HP', 'Order Created']
+
   def initialize(name)
     @name = name
     @characters = []
-    @status = 'Prepping'
+    @sort_order = 'Order Created'
     @last_event = "Fight Created!"
+  end
+
+  def self.sort_options
+    SORT_OPTIONS
   end
 
   def <<(character)
@@ -70,21 +76,35 @@ class Fight
     @characters.select { |character| character.name == name }.first
   end
 
-  def start
-    @status = "Fight Started!"
-    @last_event = "Fight Started!"
-  end
-
   def restart
     @characters.each do |character|
       character.full_heal
       character.remove_all_conditions
     end
-    @status = "Prepping"
     @last_event = "Fight Restarted!"
   end
 
+  def each_character
+    chars = if sort_order == 'Order Created'
+              @characters
+            else
+              @characters.sort do |a, b|
+                sort_value(a) <=> sort_value(b)
+              end
+            end
+
+    chars.each { |character| yield(character) }
+  end
+
   private
+
+  def sort_value(character)
+    case sort_order
+    when 'Alphabetical' then character.name
+    when 'Max HP'       then character.max_hp * -1
+    when 'Remaining HP' then character.hp * -1
+    end
+  end
 
   def verify_name(name, existing)
     loop do

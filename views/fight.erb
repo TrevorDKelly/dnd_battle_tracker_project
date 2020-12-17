@@ -30,8 +30,20 @@
   </div>
 <% end %>
 
+<div class='character-sort'>
+  <form action='/<%= slugify(@fight.name) %>/sort' method='POST'>
+    <label for='sort-order'>Sort By</label>
+    <select name='sort_order' id='sort-order'>
+      <% @sort_options.each do |option| %>
+        <option value='<%= option %>'<%= option == @fight.sort_order ? ' selected' : '' %>><%= option %></option>
+      <% end %>
+    </select>
 
-<% @fight.characters.each do |character| %>
+    <button class='fight' type='submit'>Sort</button>
+  </form>
+</div>
+
+<% @fight.each_character do |character| %>
   <div class='list-box character'>
     <div class='character-overview'>
       <div class='character-title'>

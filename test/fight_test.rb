@@ -35,8 +35,19 @@ class FightTest < Minitest::Test
 
     assert_equal "battle", fight.name
     assert_empty fight.characters
-    assert_equal "Prepping", fight.status
     assert_equal "Fight Created!", fight.last_event
+    assert_equal "Order Created", fight.sort_order
+  end
+
+  # Class Methods
+
+  def test_sort_order_options
+    options = Fight.sort_order_options
+
+    assert_instance_of Array, options
+    options.each do |option|
+      assert_instance_of String, option
+    end
   end
 
   # Accessor instance variables
@@ -47,14 +58,6 @@ class FightTest < Minitest::Test
     @fight.name = 'new'
 
     assert_equal 'new', @fight.name
-  end
-
-  def test_status
-    assert_equal 'Prepping', @fight.status
-
-    @fight.status = 'status'
-
-    assert_equal 'status', @fight.status
   end
 
   def test_last_event
@@ -71,6 +74,14 @@ class FightTest < Minitest::Test
     @fight.notes = 'notes'
 
     assert_equal 'notes', @fight.notes
+  end
+
+  def test_sort_order
+    assert_equal 'Order Created', @fight.sort_order
+
+    @fight.sort_order = 'Max HP'
+
+    assert_equal 'Max HP', @fight.sort_order
   end
 
   # Attr Reader Instance Variables
@@ -267,29 +278,76 @@ class FightTest < Minitest::Test
     assert_equal 50.0, @fight.npc_health_percentage
   end
 
-  def test_start
-    @fight.start
-
-    assert_equal "Fight Started!", @fight.status
-
-    assert_equal "Fight Started!", @fight.last_event
-  end
-
   def test_restart
     create_fight(2)
 
-    @fight.start
     @fight.characters[0].full_damage
     @fight.characters[1].take_damage(5)
     @fight.characters[1].add_condition('Prone')
 
     @fight.restart
 
-    assert_equal 'Prepping', @fight.status
     assert_equal 'Fight Restarted!', @fight.last_event
     @fight.characters.each do |character|
       assert_equal character.max_hp, character.hp
       assert_empty character.conditions
     end
+  end
+
+  def test_each_character_created_order
+    create_fight(3)
+
+    characters = []
+
+    @fight.each_character do |character|
+      characters << character
+    end
+
+    assert_equal @fight.characters, characters
+  end
+
+  def test_each_character_alphabetical
+    create_fight(3)
+    @fight.sort_order = 'Alphabetical'
+    @fight.characters[0].name = 'b'
+    @fight.characters[1].name = 'c'
+    @fight.characters[2].name = 'a'
+    names = []
+
+    @fight.each_character do |character|
+      names << character.name
+    end
+
+    assert_equal ['a', 'b', 'c'], names
+  end
+
+  def test_each_character_max_hp
+    create_fight(3)
+    @fight.sort_order = 'Max HP'
+    @fight.characters[0].max_hp = 5
+    @fight.characters[1].max_hp = 15
+    @fight.characters[2].max_hp = 10
+    max_hps = []
+
+    @fight.each_character do |character|
+      max_hps << character.max_hp
+    end
+
+    assert_equal [15, 10, 5], max_hps
+  end
+
+  def test_each_character_remaining_hp
+    create_fight(3)
+    @fight.sort_order = 'Remaining HP'
+    @fight.characters[0].take_damage(5)
+    @fight.characters[1].take_damage(2)
+    @fight.characters[2].take_damage(3)
+    hps = []
+
+    @fight.each_character do |character|
+      hps << character.hp
+    end
+
+    assert_equal [8, 7, 5], hps
   end
 end

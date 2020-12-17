@@ -18,4 +18,5 @@ to do
   no npcs message replaces fight health bar
   ge trid of fight status
   add generic characters
+  update fight last event for every event
 

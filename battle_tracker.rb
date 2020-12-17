@@ -110,8 +110,6 @@ def set_edit_character_prefills(character)
   params[:char_class] = character.char_class
   params[:race] = character.race
   @ability_scores = character.ability_scores
-  params[:notes] = character.notes
-  params[:type] = character.type
 end
 
 # Paths
@@ -144,6 +142,7 @@ end
 get "/:fight_name" do
   fetch_fight(params[:fight_name])
   @all_conditions = Character.conditions
+  @sort_options = Fight.sort_options
 
   erb :fight
 end
@@ -202,6 +201,14 @@ post "/:fight_name/restart" do
   fetch_fight(params[:fight_name])
 
   @fight.restart
+  redirect "/#{slugify(@fight.name)}"
+end
+
+# Sort Characters
+post "/:fight_name/sort" do
+  fetch_fight(params[:fight_name])
+
+  @fight.sort_order = params[:sort_order]
   redirect "/#{slugify(@fight.name)}"
 end
 

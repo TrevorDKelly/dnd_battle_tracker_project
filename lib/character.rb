@@ -12,7 +12,7 @@ class Character
   include NameIterator
 
   def initialize(params)
-    @max_hp = params[:hp]
+    @max_hp = params[:hp].to_i
     @hp = @max_hp
     set_character_stats(params)
     @conditions = []

@@ -19,7 +19,7 @@ class BattleTrackerTest < Minitest::Test
     last_request.env['rack.session']
   end
 
-  def test_index
+  def test_home
     get '/'
 
     assert_equal 200, last_response.status
@@ -51,5 +51,9 @@ class BattleTrackerTest < Minitest::Test
 
     assert_includes last_response.body, "<div class='flash-box'>"
     assert_includes last_response.body, "<p>a success</p>"
+  end
+
+  def test_new_fight_page
+
   end
 end
