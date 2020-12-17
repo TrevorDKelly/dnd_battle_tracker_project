@@ -28,20 +28,20 @@
   <div class='none-found'>
     <h3>No Characters Created Yet</h3>
   </div>
+<% else %>
+  <div class='character-sort'>
+    <form action='/<%= slugify(@fight.name) %>/sort' method='POST'>
+      <label for='sort-order'>Sort By</label>
+      <select name='sort_order' id='sort-order'>
+        <% @sort_options.each do |option| %>
+          <option value='<%= option %>'<%= option == @fight.sort_order ? ' selected' : '' %>><%= option %></option>
+        <% end %>
+      </select>
+
+      <button class='fight' type='submit'>Sort</button>
+    </form>
+  </div>
 <% end %>
-
-<div class='character-sort'>
-  <form action='/<%= slugify(@fight.name) %>/sort' method='POST'>
-    <label for='sort-order'>Sort By</label>
-    <select name='sort_order' id='sort-order'>
-      <% @sort_options.each do |option| %>
-        <option value='<%= option %>'<%= option == @fight.sort_order ? ' selected' : '' %>><%= option %></option>
-      <% end %>
-    </select>
-
-    <button class='fight' type='submit'>Sort</button>
-  </form>
-</div>
 
 <% @fight.each_character do |character| %>
   <div class='list-box character'>
