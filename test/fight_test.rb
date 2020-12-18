@@ -42,7 +42,7 @@ class FightTest < Minitest::Test
   # Class Methods
 
   def test_sort_order_options
-    options = Fight.sort_order_options
+    options = Fight.sort_options
 
     assert_instance_of Array, options
     options.each do |option|
@@ -306,6 +306,19 @@ class FightTest < Minitest::Test
     assert_equal @fight.characters, characters
   end
 
+  def test_each_character_created_order_reverse
+    create_fight(3)
+    @fight.sort_order = 'Reverse Order Created'
+
+    characters = []
+
+    @fight.each_character do |character|
+      characters << character
+    end
+
+    assert_equal @fight.characters.reverse, characters
+  end
+
   def test_each_character_alphabetical
     create_fight(3)
     @fight.sort_order = 'Alphabetical'
@@ -321,9 +334,24 @@ class FightTest < Minitest::Test
     assert_equal ['a', 'b', 'c'], names
   end
 
-  def test_each_character_max_hp
+  def test_each_character_alphabetical_reverse
     create_fight(3)
-    @fight.sort_order = 'Max HP'
+    @fight.sort_order = 'Reverse Alphabetical'
+    @fight.characters[0].name = 'b'
+    @fight.characters[1].name = 'c'
+    @fight.characters[2].name = 'a'
+    names = []
+
+    @fight.each_character do |character|
+      names << character.name
+    end
+
+    assert_equal ['c', 'b', 'a'], names
+  end
+
+  def test_each_character_max_hp_highest
+    create_fight(3)
+    @fight.sort_order = 'Highest Max HP'
     @fight.characters[0].max_hp = 5
     @fight.characters[1].max_hp = 15
     @fight.characters[2].max_hp = 10
@@ -336,9 +364,24 @@ class FightTest < Minitest::Test
     assert_equal [15, 10, 5], max_hps
   end
 
-  def test_each_character_remaining_hp
+  def test_each_character_max_hp_lowest
     create_fight(3)
-    @fight.sort_order = 'Remaining HP'
+    @fight.sort_order = 'Lowest Max HP'
+    @fight.characters[0].max_hp = 5
+    @fight.characters[1].max_hp = 15
+    @fight.characters[2].max_hp = 10
+    max_hps = []
+
+    @fight.each_character do |character|
+      max_hps << character.max_hp
+    end
+
+    assert_equal [5, 10, 15], max_hps
+  end
+
+  def test_each_character_remaining_hp_highest
+    create_fight(3)
+    @fight.sort_order = 'Highest Remaining HP'
     @fight.characters[0].take_damage(5)
     @fight.characters[1].take_damage(2)
     @fight.characters[2].take_damage(3)
@@ -349,5 +392,20 @@ class FightTest < Minitest::Test
     end
 
     assert_equal [8, 7, 5], hps
+  end
+
+  def test_each_character_remaining_hp_lowest
+    create_fight(3)
+    @fight.sort_order = 'Lowest Remaining HP'
+    @fight.characters[0].take_damage(5)
+    @fight.characters[1].take_damage(2)
+    @fight.characters[2].take_damage(3)
+    hps = []
+
+    @fight.each_character do |character|
+      hps << character.hp
+    end
+
+    assert_equal [5, 7, 8], hps
   end
 end

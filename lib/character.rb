@@ -3,11 +3,12 @@ require_relative 'name_iterator'
 class Character
   attr_reader :hp, :max_hp, :conditions, :ability_scores
   attr_accessor :name, :char_class, :size, :race, :notes, :last_event,
-                :initiative, :initiative_bonus, :ac, :type
+                :initiative, :initiative_bonus, :ac, :type, :alignment
 
   CONDITIONS = %w(Blinded Charmed Deafened Frightened Grappled Incapacitated
                   Invisible Paralyzed Petrified Poisoned Prone Restrained
-                  Stunned Unconscious)
+                  Stunned Unconscious Confused Concentrating Dead Dying
+                  Fatigued Flat-Footed Helpless Stable Asleep).sort
 
   include NameIterator
 
@@ -45,32 +46,36 @@ class Character
 
   def take_damage(amount)
     @hp -= amount.to_i
-    @hp = 0 if @hp < 0
     @last_event = "Took #{amount} points of damage!"
 
-    if @hp == 0
+    if @hp < 1
       add_condition "Unconscious"
       @last_event = "Has fallen unconscious!"
     end
   end
 
   def full_damage
-    take_damage(@max_hp)
+    take_damage(@hp) unless @hp < 1
   end
 
   def heal(amount)
     return if @hp == @max_hp
+
     @hp += amount.to_i
+    remove_condition('Unconscious') if @hp > 0
+
     @hp = @max_hp if @hp > @max_hp
     @last_event = "Healed #{amount} points!"
     @last_event = "Returned to full health!" if @hp == @max_hp
   end
 
   def full_heal
-    heal(@max_hp)
+    amount = @max_hp - @hp
+    heal(amount)
   end
 
   def add_condition(condition)
+    return if @conditions.include?(condition) || condition.empty?
     @conditions << condition
     @last_event = "Is now #{condition}"
   end
@@ -83,7 +88,6 @@ class Character
 
   def remove_all_conditions
     @conditions = []
-    @last_event = "Returned to normal condition"
   end
 
   def copy(name)
@@ -119,6 +123,7 @@ class Character
     @race = params[:race]
     @notes = params[:notes]
     @type = params[:type]
+    @alignment = params[:alignment]
     set_ability_scores(params)
   end
 

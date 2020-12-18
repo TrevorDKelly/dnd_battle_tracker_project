@@ -44,7 +44,7 @@
 <% end %>
 
 <% @fight.each_character do |character| %>
-  <div class='list-box character'>
+  <div class='<%= character_box_class(character) %>'>
     <div class='character-overview'>
       <div class='character-title'>
         <h3><%= character.name %></h3>
@@ -114,7 +114,7 @@
 
           <div class='add-condition'>
             <form action='/<%= slugify(@fight.name, character.name) %>/add_condition' method='POST'>
-              <input list='condition' id='add-condition' name='condition'><button type='submit'>Add Condition</button>
+              <button type='submit'>Add Condition</button><input list='condition' id='add-condition' name='condition'>
               <datalist id='condition'>
                 <% @all_conditions.each do |condition| %>
                   <option value='<%= condition %>'>
@@ -124,10 +124,12 @@
           </div>
         </div>
 
-        <div class='character-notes'>
-          <h5>Notes</h5>
-          <p><%= character.notes.empty? ? 'No Notes' : character.notes %></p>
-        </div>
+        <% unless character.notes.empty? %>
+          <div class='character-notes'>
+            <h5>Notes</h5>
+            <p><%= character.notes %></p>
+          </div>
+        <% end %>
 
       </div>
     </div>

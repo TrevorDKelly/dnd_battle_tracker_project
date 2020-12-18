@@ -20,3 +20,9 @@ to do
   add generic characters
   update fight last event for every event
 
+death saves
+player name
+create as duplicate
+notes
+  edit in box
+

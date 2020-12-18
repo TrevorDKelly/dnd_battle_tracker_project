@@ -258,6 +258,8 @@ button.cancel {
 .add-condition button {
   width: 120px;
   background: #003894;
+  border-radius: 1em 0 0 1em;
+  border-right: none;
 }
 
 .character-sort button {
@@ -370,6 +372,18 @@ button.cancel {
 
 /* fight page */
 
+.list-box.alive {
+  background: #d0e3c5;
+}
+
+.list-box.unconscious {
+  background: #e3c5cb;
+}
+
+.list-box.dead {
+  background: #b5b5b5;
+}
+
 .character-sort {
   font: 14px sans-serif;
 }
@@ -451,12 +465,12 @@ button.cancel {
 
 .character-info p {
   margin: auto;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .character-info.stat {
   margin: auto;
-  font: italic bold 14px sans-serif;
+  font: italic bold 12px sans-serif;
 }
 
 .character-info.value {
@@ -519,7 +533,7 @@ button.cancel {
 }
 
 .character-condition {
-  margin: 0.3em;
+  margin-left: 0.3em;
 }
 
 .current-conditions h5 {
@@ -544,8 +558,14 @@ button.cancel {
   margin:auto;
 }
 
+.add-condition {
+  display: block !important;
+}
+
 .add-condition input {
   width: 100px;
+  border-radius: 0 1em 1em 0;
+  border-left: none;
 }
 
 .score-box {

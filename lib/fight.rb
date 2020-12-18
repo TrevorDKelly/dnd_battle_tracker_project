@@ -7,7 +7,10 @@ class Fight
 
   include NameIterator
 
-  SORT_OPTIONS = ['Alphabetical', 'Max HP', 'Remaining HP', 'Order Created']
+  SORT_OPTIONS = ['Alphabetical', 'Reverse Alphabetical', 'Highest Max HP',
+                  'Lowest Max HP', 'Highest Remaining HP',
+                  'Lowest Remaining HP', 'Order Created',
+                  'Reverse Order Created']
 
   def initialize(name)
     @name = name
@@ -85,13 +88,14 @@ class Fight
   end
 
   def each_character
-    chars = if sort_order == 'Order Created'
+    chars = if sort_order.include? 'Order Created'
               @characters
             else
               @characters.sort do |a, b|
                 sort_value(a) <=> sort_value(b)
               end
             end
+    chars = chars.reverse if sort_order =~ /(Reverse|Highest)/
 
     chars.each { |character| yield(character) }
   end
@@ -99,10 +103,10 @@ class Fight
   private
 
   def sort_value(character)
-    case sort_order
+    case sort_order.sub(/(Reverse |Lowest |Highest )/, '')
     when 'Alphabetical' then character.name
-    when 'Max HP'       then character.max_hp * -1
-    when 'Remaining HP' then character.hp * -1
+    when 'Max HP'       then character.max_hp
+    when 'Remaining HP' then character.hp
     end
   end
 

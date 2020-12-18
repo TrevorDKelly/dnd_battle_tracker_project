@@ -29,12 +29,13 @@ helpers do
                 object.npc_health_percentage
               end
 
+    percent = 0 if percent < 0
     color = health_color(percent)
     "width:#{percent}%; background:#{color};"
   end
 
   def each_basic_stat(character)
-    stats = [:type, :initiative_bonus, :race, :size]
+    stats = [:type, :initiative_bonus, :race, :size, :alignment]
 
 
     stats.each do |stat|
@@ -56,6 +57,16 @@ helpers do
         name = name[0..2].upcase
         yield(name, value, bonus)
       end
+    end
+  end
+
+  def character_box_class(character)
+    if character.conditions.include?('Dead')
+      'list-box dead'
+    elsif character.conditions.include?('Unconscious')
+      'list-box unconscious'
+    else
+      'list-box alive'
     end
   end
 end
@@ -106,9 +117,13 @@ def set_edit_character_prefills(character)
   params[:name] = character.name
   params[:hp] = character.max_hp
   params[:ac] = character.ac
-  params[:initative_bonus] = character.initiative_bonus
+  params[:initiative_bonus] = character.initiative_bonus
   params[:char_class] = character.char_class
   params[:race] = character.race
+  params[:size] = character.size
+  params[:notes] = character.notes
+  params[:type] = character.type
+  params[:alignment] = character.alignment
   @ability_scores = character.ability_scores
 end
 
@@ -130,6 +145,7 @@ post "/new_fight" do
   error = valid_name_error(@name, existing_names)
 
   if error
+    status 422
     session[:error] = error
     erb :new_fight
   else

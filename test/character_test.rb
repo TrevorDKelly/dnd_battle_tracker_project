@@ -31,7 +31,6 @@ class CharacterTest < Minitest::Test
 
     assert_equal 'player', player.name
     assert_equal 10, player.hp
-    assert_equal "Character Created!", player.last_event
   end
 
   def test_new_character_starting_stats
@@ -52,6 +51,7 @@ class CharacterTest < Minitest::Test
     assert_equal 'npc', npc.name
     assert_equal 10, npc.hp
     assert_equal 10, npc.max_hp
+    assert_equal 15, npc.ac
     assert_equal 'bard', npc.char_class
     assert_equal 'elf', npc.race
     assert_equal 'the notes', npc.notes
@@ -166,6 +166,14 @@ class CharacterTest < Minitest::Test
     assert_equal 5, @npc.initiative_bonus
   end
 
+  def test_alignment
+    assert_nil @npc.alignment
+
+    @npc.alignment = 'Lawful Good'
+
+    assert_equal 'Lawful Good', @npc.alignment
+  end
+
   # Special Instance Variables setting, changing and access
 
   def test_hp
@@ -207,6 +215,19 @@ class CharacterTest < Minitest::Test
     assert_equal ["new", "second"], @npc.conditions
   end
 
+  def test_add_condition_doesnt_duplicate
+    @npc.add_condition("new")
+    @npc.add_condition("new")
+
+    assert_equal ["new"], @npc.conditions
+  end
+
+  def test_add_condition_wont_add_blank_event
+    @npc.add_condition("")
+
+    assert_empty @npc.conditions
+  end
+
   def test_add_condition_changes_event
     @npc.add_condition("new")
 
@@ -246,13 +267,6 @@ class CharacterTest < Minitest::Test
     assert_equal [], @npc.conditions
   end
 
-  def test_remove_all_conditions_creates_event
-    @npc.add_condition("new")
-    @npc.remove_all_conditions
-
-    assert_equal "Returned to normal condition", @npc.last_event
-  end
-
   def test_ability_scores
     assert_instance_of Hash, @npc.ability_scores
     assert_raises(NoMethodError) { @npc.ability_scores = "this" }
@@ -287,12 +301,6 @@ class CharacterTest < Minitest::Test
     assert_equal 5, @npc.hp
   end
 
-  def test_take_damage_does_not_go_negative
-    @npc.take_damage(15)
-
-    assert_equal 0, @npc.hp
-  end
-
   def test_zero_hp_sets_to_unconsious
     @npc.take_damage(15)
 
@@ -300,10 +308,31 @@ class CharacterTest < Minitest::Test
     assert_includes @npc.conditions, 'Unconscious'
   end
 
+  def test_getting_back_to_above_zero_removes_unconscious
+    @npc.take_damage(15)
+    @npc.heal(7)
+
+    refute_includes @npc.conditions, 'Unconscious'
+  end
+
+  def test_healing_not_to_above_zero_stays_unconscious
+    @npc.take_damage(15)
+    @npc.heal(3)
+
+    assert_includes @npc.conditions, 'Unconscious'
+  end
+
   def test_full_damage
     @npc.full_damage
 
     assert_equal 0, @npc.hp
+  end
+
+  def test_full_damage_does_nothing_if_below_0
+    @npc.take_damage(15)
+    @npc.full_damage
+
+    assert_equal -5, @npc.hp
   end
 
   def test_heal
@@ -331,6 +360,13 @@ class CharacterTest < Minitest::Test
 
   def test_full_heal
     @npc.full_damage
+    @npc.full_heal
+
+    assert_equal 10, @npc.hp
+  end
+
+  def test_full_heal_brings_negative_health_back_to_full
+    @npc.take_damage(15)
     @npc.full_heal
 
     assert_equal 10, @npc.hp
