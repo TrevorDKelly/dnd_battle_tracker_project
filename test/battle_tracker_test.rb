@@ -19,14 +19,18 @@ class BattleTrackerTest < Minitest::Test
     last_request.env['rack.session']
   end
 
-  def session_with_fight
-    { 'rack.session' => { fights: [create_fight] } }
+  def session_with_fight(characters = 0)
+    { 'rack.session' => { fights: [create_fight(characters)] } }
   end
 
   def create_fight(characters = 0)
     fight = Fight.new('fight')
     characters.times do |n|
-      fight << Character.new({ name: "npc_#{n}", hp: 10, type: 'npc' })
+      stats = {name: "npc_#{n}", hp: 10, type: 'npc', ac: '',
+               initiative_bonus: '', char_class: '', size: '', race: '',
+               notes: '', alignment: '', strength: '', dexterity: '',
+               constitution: '', intelligence: '', wisdom: '', charisma: ''}
+      fight << Character.new(stats)
     end
 
     fight
@@ -131,10 +135,47 @@ class BattleTrackerTest < Minitest::Test
     assert_includes last_response.body, 'That name is already taken!'
   end
 
+  def test_delete_fight
+    post '/fight/delete', {}, session_with_fight
+
+    assert_equal 302, last_response.status
+    assert_empty session[:fights]
+    assert_equal 'fight was deleted', session[:success]
+  end
+
+  def test_duplicate_fight
+    post '/fight/duplicate', {}, session_with_fight
+
+    assert_equal 302, last_response.status
+    assert_equal 2, session[:fights].size
+    assert_equal 'fight was duplicated!', session[:success]
+  end
+
+  def test_edit_fight_page
+    get '/fight/edit', {}, session_with_fight
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Editing fight'
+  end
+
+  def test_editing_fight
+    post '/fight/edit', { name: 'new fight name'}, session_with_fight
+
+    assert_equal 302, last_response.status
+    assert_equal 'new fight name', session[:fights][0].name
+  end
+
   def test_fight_page_empty
     get '/fight', {}, session_with_fight
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'No Characters Created Yet'
+  end
+
+  def test_fight_page_with_characters
+    get '/fight', {}, session_with_fight(1)
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "<div class='list-box alive'>"
   end
 end

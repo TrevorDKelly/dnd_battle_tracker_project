@@ -3,7 +3,8 @@ require_relative 'name_iterator'
 class Character
   attr_reader :hp, :max_hp, :conditions, :ability_scores
   attr_accessor :name, :char_class, :size, :race, :notes, :last_event,
-                :initiative, :initiative_bonus, :ac, :type, :alignment
+                :initiative_roll, :initiative_bonus, :ac, :type, :alignment,
+                :initiative_order
 
   CONDITIONS = %w(Blinded Charmed Deafened Frightened Grappled Incapacitated
                   Invisible Paralyzed Petrified Poisoned Prone Restrained
@@ -17,6 +18,8 @@ class Character
     @hp = @max_hp
     set_character_stats(params)
     @conditions = []
+    @initiative_order = nil
+    @initiative_roll  = nil
     @last_event = "Character Created!"
   end
 
@@ -63,6 +66,7 @@ class Character
 
     @hp += amount.to_i
     remove_condition('Unconscious') if @hp > 0
+    remove_condition('Dead') if @hp > 0
 
     @hp = @max_hp if @hp > @max_hp
     @last_event = "Healed #{amount} points!"
@@ -108,7 +112,13 @@ class Character
   def reset
     full_heal
     remove_all_conditions
+    @initiative_roll = nil
+    @initiative_order = nil
     @last_event = 'Has been reset'
+  end
+
+  def roll_initiative
+    @initiative_roll = rand(20) + 1 + @initiative_bonus.to_i
   end
 
   private

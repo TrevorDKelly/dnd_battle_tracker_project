@@ -15,12 +15,13 @@ class Fight
   def initialize(name)
     @name = name
     @characters = []
+    @initiative_rolled = false
     @sort_order = 'Order Created'
     @last_event = "Fight Created!"
   end
 
-  def self.sort_options
-    SORT_OPTIONS
+  def sort_options
+    initiative_rolled? ? SORT_OPTIONS + ['Initiative'] : SORT_OPTIONS
   end
 
   def <<(character)
@@ -80,16 +81,16 @@ class Fight
   end
 
   def restart
-    @characters.each do |character|
-      character.full_heal
-      character.remove_all_conditions
-    end
+    @characters.each(&:reset)
+    @initiative_rolled = false
     @last_event = "Fight Restarted!"
   end
 
   def each_character
     chars = if sort_order.include? 'Order Created'
               @characters
+            elsif sort_order == 'Initiative'
+              sort_by_initiative
             else
               @characters.sort do |a, b|
                 sort_value(a) <=> sort_value(b)
@@ -100,6 +101,37 @@ class Fight
     chars.each { |character| yield(character) }
   end
 
+  def roll_initiative(character = nil)
+    if character
+      character.roll_initiative
+    else
+      @characters.each(&:roll_initiative)
+      @sort_order = 'Initiative'
+      @initiative_rolled = true
+    end
+    set_initiative_order
+  end
+
+  def initiative_rolled?
+    @initiative_rolled
+  end
+
+  def set_initiative_order
+    chars = @characters.sort_by do |char|
+              dexterity = char.ability_scores[:dexterity]
+              [
+                char.initiative_roll.to_i,
+                dexterity == '' ? 10 : dexterity.to_i,
+                char.initiative_bonus.to_i,
+                (char.initiative_order || rand(100)) * -1
+              ]
+            end
+
+    chars.reverse.each_with_index do |char, index|
+      char.initiative_order = index + 1
+    end
+  end
+
   private
 
   def sort_value(character)
@@ -108,6 +140,20 @@ class Fight
     when 'Max HP'       then character.max_hp
     when 'Remaining HP' then character.hp
     end
+  end
+
+  def sort_by_initiative
+    dead, alive = @characters.partition do |char|
+                    char.conditions.include? 'Dead'
+                  end
+    sorted = []
+    [alive, dead].each do |chars|
+      rolled, not_rolled = chars.partition { |char| char.initiative_order }
+      sorted << rolled.sort_by(&:initiative_order)
+      sorted << not_rolled
+    end
+
+    sorted.flatten
   end
 
   def verify_name(name, existing)

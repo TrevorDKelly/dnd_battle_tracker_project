@@ -22,6 +22,18 @@ helpers do
     names.map { |name| name.gsub(' ', '-') }.join('/')
   end
 
+  def ordinalize(number)
+    number_end = number % 100
+    return "#{number}th" if (11..13).cover?(number_end)
+
+    case number % 10
+    when 1 then "#{number}st"
+    when 2 then "#{number}nd"
+    when 3 then "#{number}rd"
+    else        "#{number}th"
+    end
+  end
+
   def health_fill(object)
     percent = if object.kind_of? Character
                 (object.hp.to_f / object.max_hp) * 100
@@ -135,6 +147,7 @@ end
 
 # New Fight
 get "/new_fight" do
+  @name = ''
   erb :new_fight
 end
 
@@ -158,7 +171,7 @@ end
 get "/:fight_name" do
   fetch_fight(params[:fight_name])
   @all_conditions = Character.conditions
-  @sort_options = Fight.sort_options
+  @sort_options = @fight.sort_options
 
   erb :fight
 end
@@ -217,6 +230,32 @@ post "/:fight_name/restart" do
   fetch_fight(params[:fight_name])
 
   @fight.restart
+  redirect "/#{slugify(@fight.name)}"
+end
+
+# Roll Initiaitve
+post "/:fight_name/roll-initiative" do
+  fetch_fight(params[:fight_name])
+
+  @fight.roll_initiative
+  redirect "/#{slugify(@fight.name)}"
+end
+
+post "/:fight_name/:character_name/roll-initiative" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @character.roll_initiative
+  @fight.set_initiative_order
+  redirect "/#{slugify(@fight.name)}"
+end
+
+post "/:fight_name/:character_name/set-initiative" do
+  fetch_fight(params[:fight_name])
+  fetch_character(params[:character_name])
+
+  @character.initiative_roll = params[:initiative_roll]
+  @fight.set_initiative_order
   redirect "/#{slugify(@fight.name)}"
 end
 

@@ -150,12 +150,12 @@ class CharacterTest < Minitest::Test
     assert_equal 'last_event', @npc.last_event
   end
 
-  def test_initiative
-    assert_nil @npc.initiative
+  def test_initiative_roll
+    assert_nil @npc.initiative_roll
 
-    @npc.initiative = 15
+    @npc.initiative_roll = 15
 
-    assert_equal 15, @npc.initiative
+    assert_equal 15, @npc.initiative_roll
   end
 
   def test_initiative_bonus
@@ -164,6 +164,14 @@ class CharacterTest < Minitest::Test
     @npc.initiative_bonus = 5
 
     assert_equal 5, @npc.initiative_bonus
+  end
+
+  def test_initiative_order
+    assert_nil @npc.initiative_order
+
+    @npc.initiative_order = 5
+
+    assert_equal 5, @npc.initiative_order
   end
 
   def test_alignment
@@ -315,6 +323,14 @@ class CharacterTest < Minitest::Test
     refute_includes @npc.conditions, 'Unconscious'
   end
 
+  def test_getting_back_to_above_zero_removes_dead
+    @npc.take_damage(15)
+    @npc.add_condition('Dead')
+    @npc.heal(7)
+
+    refute_includes @npc.conditions, 'Dead'
+  end
+
   def test_healing_not_to_above_zero_stays_unconscious
     @npc.take_damage(15)
     @npc.heal(3)
@@ -332,7 +348,7 @@ class CharacterTest < Minitest::Test
     @npc.take_damage(15)
     @npc.full_damage
 
-    assert_equal -5, @npc.hp
+    assert_equal (-5), @npc.hp
   end
 
   def test_heal
@@ -396,6 +412,22 @@ class CharacterTest < Minitest::Test
     assert_equal 10, new_character.max_hp
   end
 
+  def test_copy_removes_initiative_roll
+    @npc.initiative_roll = 5
+
+    new_character = @npc.copy('new')
+
+    assert_nil new_character.initiative_roll
+  end
+
+  def test_copy_removes_initiative_order
+    @npc.initiative_order = 5
+
+    new_character = @npc.copy('new')
+
+    assert_nil new_character.initiative_order
+  end
+
   def test_copy_resets_new_character
     @npc.take_damage(5)
     @npc.add_condition('Prone')
@@ -437,5 +469,16 @@ class CharacterTest < Minitest::Test
         assert_equal 10, character.ability_scores[score]
       end
     end
+  end
+
+  def test_roll_initiative
+    @npc.initiative_bonus = 10
+    rolls = []
+    100.times do
+      @npc.roll_initiative
+      rolls << @npc.initiative_roll
+    end
+
+    assert rolls.all? { |roll| (11..30).cover? roll }
   end
 end

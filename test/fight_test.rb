@@ -39,17 +39,6 @@ class FightTest < Minitest::Test
     assert_equal "Order Created", fight.sort_order
   end
 
-  # Class Methods
-
-  def test_sort_order_options
-    options = Fight.sort_options
-
-    assert_instance_of Array, options
-    options.each do |option|
-      assert_instance_of String, option
-    end
-  end
-
   # Accessor instance variables
 
   def test_name
@@ -281,6 +270,7 @@ class FightTest < Minitest::Test
   def test_restart
     create_fight(2)
 
+    @fight.roll_initiative
     @fight.characters[0].full_damage
     @fight.characters[1].take_damage(5)
     @fight.characters[1].add_condition('Prone')
@@ -288,10 +278,37 @@ class FightTest < Minitest::Test
     @fight.restart
 
     assert_equal 'Fight Restarted!', @fight.last_event
+    assert_equal false, @fight.initiative_rolled?
     @fight.characters.each do |character|
       assert_equal character.max_hp, character.hp
       assert_empty character.conditions
+      assert_nil character.initiative_order
+      assert_nil character.initiative_roll
     end
+  end
+
+  def test_sort_order_options
+    options = @fight.sort_options
+
+    assert_instance_of Array, options
+    refute_includes options, 'Initiative'
+  end
+
+  def test_sort_order_options_includes_initiative_if_rolled
+    @fight.roll_initiative
+    options = @fight.sort_options
+
+    assert_instance_of Array, options
+    assert_includes options, 'Initiative'
+  end
+
+  def test_sort_order_options_removes_initiative_if_restarted
+    @fight.roll_initiative
+    @fight.restart
+    options = @fight.sort_options
+
+    assert_instance_of Array, options
+    refute_includes options, 'Initiative'
   end
 
   def test_each_character_created_order
@@ -407,5 +424,126 @@ class FightTest < Minitest::Test
     end
 
     assert_equal [5, 7, 8], hps
+  end
+
+  # Initiative
+
+  def test_initiative_rolled?
+    assert_equal false, @fight.initiative_rolled?
+  end
+
+  def test_roll_initiative
+    create_fight(3)
+
+    @fight.roll_initiative
+
+    assert_equal true, @fight.initiative_rolled?
+    assert_equal 'Initiative', @fight.sort_order
+    @fight.characters.each do |character|
+      assert_includes (1..20), character.initiative_roll
+      assert_includes (1..3),  character.initiative_order
+    end
+  end
+
+  def test_initiative_order_set_by_roll
+    create_fight(3)
+    @fight.roll_initiative
+
+    initiative_orders = []
+
+    @fight.each_character do |character|
+      initiative_orders << character.initiative_order
+    end
+
+    assert_equal [1, 2, 3], initiative_orders
+  end
+
+  def test_initiative_roll_sets_initiative_order
+    create_fight(3)
+
+    @fight.characters[0].initiative_roll = 10
+    @fight.characters[1].initiative_roll = 12
+    @fight.characters[2].initiative_roll = 11
+    @fight.set_initiative_order
+    @fight.sort_order = 'Initiative'
+    initiative_rolls = []
+
+    @fight.each_character do |character|
+      initiative_rolls << character.initiative_roll
+    end
+
+    assert_equal [12, 11, 10], initiative_rolls
+  end
+
+  def test_dexterity_sets_initiative_order
+    create_fight(3)
+
+    @fight.characters.each { |character| character.initiative_roll = 10 }
+    @fight.characters[0].ability_scores[:dexterity] = '10'
+    @fight.characters[1].ability_scores[:dexterity] = '12'
+    @fight.characters[2].ability_scores[:dexterity] = '11'
+    @fight.set_initiative_order
+    @fight.sort_order = 'Initiative'
+    dexterity_scores = []
+
+    @fight.each_character do |character|
+      dexterity_scores << character.ability_scores[:dexterity]
+    end
+
+    assert_equal ['12', '11', '10'], dexterity_scores
+  end
+
+  def test_dexterity_sets_initiative_order_with_default_of_ten
+    create_fight(3)
+
+    @fight.characters.each { |character| character.initiative_roll = 10 }
+    @fight.characters[0].ability_scores[:dexterity] = ''
+    @fight.characters[1].ability_scores[:dexterity] = '9'
+    @fight.characters[2].ability_scores[:dexterity] = '11'
+    @fight.set_initiative_order
+    @fight.sort_order = 'Initiative'
+    dexterity_scores = []
+
+    @fight.each_character do |character|
+      dexterity_scores << character.ability_scores[:dexterity]
+    end
+
+    assert_equal ['11', '', '9'], dexterity_scores
+  end
+
+  def test_initiative_bonus_sets_initiative_order_with_default_zero
+    create_fight(3)
+
+    @fight.characters.each { |character| character.initiative_roll = 10 }
+    @fight.characters[0].initiative_bonus = ''
+    @fight.characters[1].initiative_bonus = '2'
+    @fight.characters[2].initiative_bonus = '-1'
+    @fight.set_initiative_order
+    @fight.sort_order = 'Initiative'
+    initiative_bonuses = []
+
+    @fight.each_character do |character|
+      initiative_bonuses << character.initiative_bonus
+    end
+
+    assert_equal ['2', '', '-1'], initiative_bonuses
+  end
+
+  def test_initiative_sets_initiative_order
+    create_fight(3)
+
+    @fight.characters.each { |character| character.initiative_roll = 10 }
+    @fight.characters[0].initiative_bonus = '1'
+    @fight.characters[1].initiative_bonus = '2'
+    @fight.characters[2].initiative_bonus = '-1'
+    @fight.set_initiative_order
+    @fight.sort_order = 'Initiative'
+    initiative_bonuses = []
+
+    @fight.each_character do |character|
+      initiative_bonuses << character.initiative_bonus
+    end
+
+    assert_equal ['2', '1', '-1'], initiative_bonuses
   end
 end

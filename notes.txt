@@ -1,24 +1,16 @@
 fight page
   last events
   fight notes
-  roll initiative
-  list chracters reoder w/ initiative
 
 to do
-  reset
-    no initiative
   add character info
-    initiative
-      bonus
-      roll and set
-  sinatra tests
   update tests
     sinatra
   initiative
   no npcs message replaces fight health bar
-  ge trid of fight status
   add generic characters
   update fight last event for every event
+  events with numbers dont add 's' if only 1
 
 death saves
 player name
@@ -26,3 +18,8 @@ create as duplicate
 notes
   edit in box
 
+
+set initiative order
+  last line will compare initiative order against random if one has init
+
+paths swap underscores for dash

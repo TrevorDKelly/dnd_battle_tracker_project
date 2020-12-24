@@ -32,6 +32,10 @@ header > h1 {
   display: inline-block;
 }
 
+.title form {
+  display: inline-block;
+}
+
 .top a {
   display: inline-block;
 }
@@ -176,6 +180,10 @@ button.edit {
   vertical-align: 50%;
 }
 
+.title button.initiative {
+  width: 100px;
+}
+
 .right-buttons {
   display:inline-block;
   width:9%;
@@ -269,6 +277,22 @@ button.cancel {
 	text-shadow:0px 1px 0px white;
 }
 
+.initiative button {
+  border-radius: 1em;
+  border-left: none;
+  height: 21px;
+  font: bold 12px sans-serif;
+  color: white;
+  cursor: pointer;
+  width: 60px;
+  background: black;
+}
+
+.initiative button.set {
+  width: 40px;
+  border-radius: 1em 0 0 1em;
+}
+
 /* Flash Messages */
 
 .flash-box {
@@ -313,7 +337,6 @@ button.cancel {
   font: 1.1em sans-serif;
   color: black;
   min-height: 4em;
-  padding: 0.4em
 }
 
 .list-box a {
@@ -405,6 +428,7 @@ button.cancel {
   width: 25%;
   vertical-align: top;
   font: 20px 'Texturina', sans-serif;
+  line-height: 1.3em;
 }
 
 .health-bar {
@@ -433,6 +457,55 @@ button.cancel {
   display: inline-block;
   margin: auto;
   font-size: 14px;
+}
+
+/* Initiative Box */
+
+.initiative {
+  display: inline-block;
+  color: white;
+  background: grey;
+  width: 50%;
+  margin: 0.5em 0 -21px 0;
+  padding: 0.1em 0 20px 1em;
+  border-radius: 1em 1em 0 0;
+}
+
+.initiative h5 {
+  display: inline-block;
+  margin: auto;
+  font: bold 14px sans-serif;
+  text-transform: uppercase;
+  margin-right: 0.2em;
+  color: black;
+}
+
+.initiative p {
+  display: inline-block;
+  margin: auto;
+  margin-right: 0.2em;
+}
+
+.order {
+  font: bold 14px sans-serif;
+}
+
+.score {
+  font: italic 12px sans-serif;
+}
+
+.initiative form {
+  display: inline-block;
+  margin: auto;
+  margin-right: 0.2em;
+}
+
+.initiative input {
+  border-radius: 0 1em 1em 0;
+  border-left: none;
+  padding-right: 0.5em;
+  height: 15px;
+  width: 30px;
 }
 
 /* Character Box*/
