@@ -6,7 +6,6 @@ to do
   add character info
   update tests
     sinatra
-  initiative
   no npcs message replaces fight health bar
   add generic characters
   update fight last event for every event

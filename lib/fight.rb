@@ -83,6 +83,7 @@ class Fight
   def restart
     @characters.each(&:reset)
     @initiative_rolled = false
+    @sort_order = 'Order Created'
     @last_event = "Fight Restarted!"
   end
 
